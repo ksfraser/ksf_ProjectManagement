@@ -25,10 +25,13 @@
         "php": ">=8.0",
         "psr/log": "^3.0",
         "psr/event-dispatcher": "^1.0",
+        "psr/container": "^2.0",
         "ksfraser/ksf-exceptions": "^1.0",
         "ksfraser/ksf-traits": "^1.0",
         "ksfraser/ksf-schema-manager": "^1.0",
-        "ksfraser/ksf-validation": "^1.0"
+        "ksfraser/ksf-validation": "^1.0",
+        "ksfraser/file": "^1.0",
+        "doctrine/dbal": "^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
