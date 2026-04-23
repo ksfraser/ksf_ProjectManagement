@@ -1,0 +1,36 @@
+# Composer
+/vendor/
+composer.lock
+
+# PHPUnit
+.phpunit.cache/
+coverage/
+coverage.clover
+.phpunit.result.cache
+
+# PHPStan
+.phpstan/
+
+# CodeSniffer
+.phpcs.cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+build/
+dist/
+
+# Documentation generated
+docs/
+
+# Test outputs
+tmp/
+temp/
