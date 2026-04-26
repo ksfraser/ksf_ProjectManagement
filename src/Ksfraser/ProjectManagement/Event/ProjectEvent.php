@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace Ksfraser\ProjectManagement\Event;
 
 use Ksfraser\ProjectManagement\Entity\Project;
-use Psr\EventDispatcher\Stoppable;
+use Psr\EventDispatcher\StoppableEventInterface;
 
-abstract class ProjectEvent implements Stoppable
+abstract class ProjectEvent implements StoppableEventInterface
 {
     private bool $propagationStopped = false;
 

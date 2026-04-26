@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace Ksfraser\ProjectManagement\Exception;
 
-use KsfExceptions\ValidationException as BaseValidationException;
+use Throwable;
 
-class ValidationException extends ProjectException
+class ValidationException extends \Exception
 {
     private array $errors;
 

@@ -19,28 +19,25 @@
             "email": "dev@ksfii.org"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.0",
-        "psr/log": "^3.0",
+        "psr/log": "^1.1",
         "psr/event-dispatcher": "^1.0",
         "psr/container": "^2.0",
-        "ksfraser/ksf-exceptions": "^1.0",
-        "ksfraser/ksf-traits": "^1.0",
-        "ksfraser/ksf-schema-manager": "^1.0",
-        "ksfraser/ksf-validation": "^1.0",
-        "ksfraser/file": "^1.0",
+        "ksfraser/exceptions": "*",
+        "ksfraser/genericinterface": "*",
+        "ksfraser/ksf-schemamanager": "*",
+        "ksfraser/validation": "*",
+        "ksfraser/file": "*",
         "doctrine/dbal": "^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
-        "phpdocumentor/phpdocumentor": "^3.0",
         "phpstan/phpstan": "^1.0",
         "squizlabs/php_codesniffer": "^3.0",
-        "ksfraser/ksf-cache": "^1.0",
-        "ksfraser/html": "^1.0",
-        "ksfraser/famock": "^1.0"
+        "ksfraser/famock": "*"
     },
     "autoload": {
         "psr-4": {
@@ -77,6 +74,18 @@
             "type": "composer",
             "url": "https://packagist.org",
             "canonical": true
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ksfraser/ksf_SchemaManager"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ksfraser/FILE"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/ksfraser/ksf_Cache"
         }
     ]
 }

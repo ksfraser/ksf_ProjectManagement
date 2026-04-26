@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace Ksfraser\ProjectManagement\Event;
 
 use Ksfraser\ProjectManagement\Entity\ProjectAssignment;
-use Psr\EventDispatcher\Stoppable;
+use Psr\EventDispatcher\StoppableEventInterface;
 
-class EmployeeAssignedToProjectEvent implements Stoppable
+class EmployeeAssignedToProjectEvent implements StoppableEventInterface
 {
     private bool $propagationStopped = false;
 
