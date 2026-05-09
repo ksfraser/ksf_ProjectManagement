@@ -9,20 +9,8 @@ declare(strict_types=1);
 
 namespace Ksfraser\ProjectManagement\Exception;
 
-use KsfExceptions\ValidationException as BaseValidationException;
+use Ksfraser\Exceptions\ProjectManagement\ProjectValidationException as BaseProjectValidationException;
 
-class ValidationException extends ProjectException
+class ValidationException extends BaseProjectValidationException
 {
-    private array $errors;
-
-    public function __construct(string $message, array $errors = [], int $code = 0, ?\Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-        $this->errors = $errors;
-    }
-
-    public function getErrors(): array
-    {
-        return $this->errors;
-    }
 }

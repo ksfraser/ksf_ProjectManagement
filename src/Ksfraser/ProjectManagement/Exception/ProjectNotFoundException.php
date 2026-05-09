@@ -9,10 +9,12 @@ declare(strict_types=1);
 
 namespace Ksfraser\ProjectManagement\Exception;
 
-class ProjectNotFoundException extends ProjectException
+use Ksfraser\Exceptions\ProjectManagement\ProjectNotFoundException as BaseProjectNotFoundException;
+
+class ProjectNotFoundException extends BaseProjectNotFoundException
 {
     public function __construct(string $projectId)
     {
-        parent::__construct("Project {$projectId} not found");
+        parent::__construct($projectId);
     }
 }

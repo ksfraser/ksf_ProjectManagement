@@ -11,12 +11,11 @@ declare(strict_types=1);
 
 namespace Ksfraser\ProjectManagement\Exception;
 
-use KsfExceptions\KsfException;
-use Throwable;
+use Ksfraser\Exceptions\ProjectManagement\ProjectException as BaseProjectException;
 
-class ProjectException extends KsfException
+class ProjectException extends BaseProjectException
 {
-    public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

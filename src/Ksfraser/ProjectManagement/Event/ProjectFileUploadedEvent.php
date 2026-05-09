@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace Ksfraser\ProjectManagement\Event;
 
 use Ksfraser\ProjectManagement\DTO\File\FileDTO;
-use Psr\EventDispatcher\Stoppable;
+use Psr\EventDispatcher\StoppableEventInterface;
 
-class ProjectFileUploadedEvent implements Stoppable
+class ProjectFileUploadedEvent implements StoppableEventInterface
 {
     private bool $propagationStopped = false;
 
