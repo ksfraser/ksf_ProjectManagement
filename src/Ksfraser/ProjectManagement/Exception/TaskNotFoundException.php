@@ -9,10 +9,12 @@ declare(strict_types=1);
 
 namespace Ksfraser\ProjectManagement\Exception;
 
-class TaskNotFoundException extends ProjectException
+use Ksfraser\Exceptions\ProjectManagement\TaskNotFoundException as BaseTaskNotFoundException;
+
+class TaskNotFoundException extends BaseTaskNotFoundException
 {
     public function __construct(string $taskId)
     {
-        parent::__construct("Task {$taskId} not found");
+        parent::__construct($taskId);
     }
 }
