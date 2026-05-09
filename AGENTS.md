@@ -28,6 +28,46 @@ ksf_ProjectManagement/           # Business logic (framework-agnostic)
 
 ---
 
+## Legacy Migration: Inheritance → Traits
+
+### The Problem
+Legacy modules used deep inheritance with magic methods for type validation and event notifications.
+
+### The Solution
+Replace inheritance with trait composition:
+
+```php
+// OLD: Inheritance with magic methods
+class Project extends BaseEntity {
+    public function __set($k, $v) {
+        validate_type($k, $v);
+        $this->$k = $v;
+        $this->notify("NOTIFY_SET_{$k}", $v);
+    }
+}
+
+// NEW: Trait composition
+class Project {
+    use ValidatableTrait;      // Type validation
+    use EventEmitterTrait;     // Event notifications
+    use EntityStateTrait;      // State tracking
+    use TimestampTrait;         // Timestamps
+    
+    private ?string $name = null;
+    
+    public function setName(string $name): self
+    {
+        $this->assertNotEmptyString($name, 'name');
+        $this->name = $name;
+        $this->markModified();
+        $this->emit('project.name.changed', $name);
+        return $this;
+    }
+}
+```
+
+---
+
 ## Dependency Management
 
 ### Required Libraries
