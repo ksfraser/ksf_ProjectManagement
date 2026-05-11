@@ -153,12 +153,22 @@ All events implement `Stoppable` interface.
 
 ### 2.6 Exceptions
 
-| Exception | Description |
-|-----------|-------------|
-| ProjectException | Base exception |
-| ProjectNotFoundException | Project not found |
-| TaskNotFoundException | Task not found |
-| ValidationException | Validation failed, contains errors[] |
+All exceptions use `Ksfraser\Exceptions\ProjectManagement\*` from the ksfraser/exceptions library:
+
+| Exception | Extends | Description |
+|-----------|---------|-------------|
+| `Ksfraser\Exceptions\ProjectManagement\ProjectException` | `RuntimeException` | Base PM exception |
+| `Ksfraser\Exceptions\ProjectManagement\ProjectNotFoundException` | `ProjectException` | Project not found |
+| `Ksfraser\Exceptions\ProjectManagement\TaskNotFoundException` | `ProjectException` | Task not found |
+| `Ksfraser\Exceptions\ProjectManagement\ValidationException` | `Domain\ValidationException` | Validation failed with errors[] |
+
+### 2.7 Composer Dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| ksfraser/exceptions | ^1.3 | Exception hierarchy (Domain, Utility, PM-specific) |
+| psr/event-dispatcher | ^2.0 | PSR-14 event dispatcher |
+| psr/log | ^3.0 | PSR-3 logging |
 
 ---
 
