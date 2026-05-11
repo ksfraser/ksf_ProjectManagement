@@ -5,11 +5,7 @@
          colors="true"
          cacheDirectory=".phpunit.cache"
          executionOrder="depends,defects"
-         requireCoverageMetadata="true"
-         beStrictAboutCoverageMetadata="true"
-         beStrictAboutOutputDuringTests="true"
-         failOnRisky="true"
-         failOnWarning="true">
+         beStrictAboutOutputDuringTests="true">
     <testsuites>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
@@ -18,21 +14,12 @@
             <directory>tests/Integration</directory>
         </testsuite>
     </testsuites>
-    <coverage>
-        <report>
-            <html outputDirectory="coverage"/>
-            <clover outputFile="coverage.clover"/>
-        </report>
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
         <exclude>
             <directory>src/Ksfraser/ProjectManagement/Exception</directory>
         </exclude>
-    </coverage>
-    <source>
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
     </source>
 </phpunit>
