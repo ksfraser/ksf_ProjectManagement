@@ -229,22 +229,68 @@ interface ProjectServiceInterface {
 
 ---
 
-## 7. Security & Access Control
+## 7. RBAC Integration
 
-### 7.1 Access Levels
+### 7.1 Module Registration
 
-| Role | Create | Read | Update | Delete |
-|------|--------|------|--------|--------|
-| Admin | ✓ | All | All | All |
-| Project Manager | ✓ | Own Projects | Own Projects | Own (draft only) |
-| Team Lead | ✗ | Assigned Projects | Assigned Tasks | ✗ |
-| Employee | ✗ | Assigned Projects | Own Tasks | ✗ |
+ksf_ProjectManagement registers with ksfraser/rbac:
+- record_types: 'project', 'task'
+- projections: 'public' (name, status, dates), 'full' (all fields including budget, costs, contracts)
+- allow_invite: false
+- children: task (child of project)
 
-### 7.2 Field-Level Security
+### 7.2 Entity Projections
 
-- Budget visibility: Admin, PM only
-- Cost calculations: Admin, Finance only
-- Customer linkage: Admin, PM, Sales
+| Entity | PUBLIC Fields | FULL Fields |
+|--------|---------------|-------------|
+| Project | name, description, status, start_date, end_date, priority | + budget, costs, contracts, risks, customer data |
+| Task | name, status, progress, assigned_to, due_date, estimated_hours | + actual_hours, dependencies, internal_notes |
+
+### 7.3 Access Model
+
+- **Project Manager**: FULL access to assigned projects (via {pmUserId}_individual team grant)
+- **Team Lead**: PUBLIC to project + FULL to assigned tasks + ability to edit team tasks
+- **Team Member**: PUBLIC to project + FULL to own tasks only (via task-level xref)
+- **Executive/Sponsor**: PUBLIC to portfolio projects (view-only)
+- **Finance**: FULL to budget/cost fields of active projects
+
+### 7.4 SQL Enforcement
+
+All project-fetching queries MUST include the RBAC standard JOIN:
+
+```sql
+JOIN 0_rbac_record_access ra
+  ON ra.record_id    = p.id
+ AND ra.record_type  = 'project'
+ AND ra.module       = 'project_management'
+ AND ra.inactive     = 0
+ AND ra.can_view     = 1
+JOIN 0_rbac_team_members tm
+  ON tm.team_id  = ra.team_id
+ AND tm.user_id  = :currentUserId
+ AND tm.inactive = 0
+```
+
+### 7.5 Access Inheritance (Parent → Child)
+
+When a team is granted access to a project, the grant MAY optionally cascade to child tasks via the InheritanceMap:
+- Task status 'not_started' / 'in_progress': inherit parent capabilities
+- Task status 'completed': reduce to view-only (can_view = 1, can_edit = 0)
+- Task status 'cancelled': exclude from inheritance
+
+### 7.6 Switch-Role Elevation
+
+Users with multiple project roles can elevate per-record. Example: a Team Lead who is also a Project Manager on a different project cannot automatically see the PM-level data — they must hold a grant for that specific project.
+
+### 7.7 Soft Delete
+
+Projects and tasks use soft delete: `deleted = 1`, `deleted_by`, `deleted_at`. Hard delete is super-admin only.
+
+### 7.8 Audit Logging
+
+- Project/task access grants logged to RBAC audit log
+- Permission denials for failed access attempts optionally logged
+- Role elevation events logged
 
 ---
 
@@ -334,4 +380,4 @@ ksf_ProjectManagement/
 ---
 
 *Document Version: 1.0.0*
-*Last Updated: 2026-05-11*
+*Last Updated: 2026-05-24*

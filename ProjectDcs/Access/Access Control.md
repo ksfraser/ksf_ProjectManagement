@@ -8,7 +8,16 @@
 | Module | ksf_ProjectManagement |
 | Version | 1.0.0 |
 | Author | KSF Development Team |
-| Last Updated | May 2026 |
+| Last Updated | 2026-05-24 |
+
+### RBAC Model Alignment
+
+This document describes the conceptual access control model. Implementation uses ksfraser/rbac for enforcement:
+
+- **Teams**: Each role below maps to one or more RBAC teams. Team membership determines record-level access.
+- **SQL Enforcement**: All access checks use the RBAC standard JOIN pattern against 0_rbac_record_access.
+- **Projections**: Field visibility is controlled by DTO projections (PUBLIC vs FULL per entity).
+- **Default Deny**: Absence of an RBAC xref grant = no access, regardless of role definition.
 
 ---
 
@@ -171,7 +180,26 @@ Access to ksf_FA_ProjectManagement:
 
 ---
 
-## 10. Revision History
+## 11. Inheritance and Cascade
+
+### 11.1 Parent-Child Grant Inheritance
+
+When a team is granted access to a project:
+- All child tasks NOT YET completed inherit the same capability set
+- Completed tasks become view-only (can_view=1, can_edit=0)
+- Cancelled tasks are excluded from inheritance
+- Deep inheritance capped at 5 levels (configurable)
+
+### 11.2 Org Chart Integration
+
+When ksf_OrgChart is active:
+- Project Manager's org_direct team members get PUBLIC access to the PM's projects
+- Org cascade depth is configurable (default: 5 levels via indirect_lX teams)
+- Resource Managers see cross-project resource allocation
+
+---
+
+## 12. Revision History
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
