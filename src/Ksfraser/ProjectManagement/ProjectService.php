@@ -35,12 +35,21 @@ class ProjectService implements ProjectServiceInterface
     private const TABLE_TASKS = 'fa_pm_tasks';
     private const TABLE_ASSIGNMENTS = 'fa_pm_assignments';
 
+    private DatabaseAdapterInterface $db;
+    private EventDispatcherInterface $events;
+    private LoggerInterface $logger;
+    private EmployeeServiceInterface $employeeService;
+
     public function __construct(
-        private readonly DatabaseAdapterInterface $db,
-        private readonly EventDispatcherInterface $events,
-        private readonly LoggerInterface $logger,
-        private readonly EmployeeServiceInterface $employeeService
+        DatabaseAdapterInterface $db,
+        EventDispatcherInterface $events,
+        LoggerInterface $logger,
+        EmployeeServiceInterface $employeeService
     ) {
+        $this->db = $db;
+        $this->events = $events;
+        $this->logger = $logger;
+        $this->employeeService = $employeeService;
     }
 
     public function createProject(array $projectData): Project
@@ -439,7 +448,7 @@ class ProjectService implements ProjectServiceInterface
             $project->getName(),
             $project->getDescription(),
             $project->getStartDate()->format('Y-m-d'),
-            $project->getEndDate()?->format('Y-m-d'),
+            $project->getEndDate() !== null ? $project->getEndDate()->format('Y-m-d') : null,
             $project->getBudget(),
             $project->getCustomerId(),
             $project->getProjectManager(),
@@ -463,8 +472,8 @@ class ProjectService implements ProjectServiceInterface
             $task->getName(),
             $task->getDescription(),
             $task->getAssignedTo(),
-            $task->getStartDate()?->format('Y-m-d'),
-            $task->getEndDate()?->format('Y-m-d'),
+            $task->getStartDate() !== null ? $task->getStartDate()->format('Y-m-d') : null,
+            $task->getEndDate() !== null ? $task->getEndDate()->format('Y-m-d') : null,
             $task->getEstimatedHours(),
             $task->getActualHours(),
             $task->getProgress(),
@@ -484,7 +493,7 @@ class ProjectService implements ProjectServiceInterface
             $assignment->getEmployeeId(),
             $assignment->getRole(),
             $assignment->getStartDate()->format('Y-m-d'),
-            $assignment->getEndDate()?->format('Y-m-d'),
+            $assignment->getEndDate() !== null ? $assignment->getEndDate()->format('Y-m-d') : null,
             $assignment->getAllocationPercentage()
         ]);
     }

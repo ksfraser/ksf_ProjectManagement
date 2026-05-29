@@ -15,10 +15,12 @@ use Psr\EventDispatcher\StoppableEventInterface;
 class EmployeeAssignedToProjectEvent implements StoppableEventInterface
 {
     private bool $propagationStopped = false;
+    private ProjectAssignment $assignment;
 
     public function __construct(
-        private readonly ProjectAssignment $assignment
+        ProjectAssignment $assignment
     ) {
+        $this->assignment = $assignment;
     }
 
     public function getAssignment(): ProjectAssignment

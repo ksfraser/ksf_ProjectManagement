@@ -15,10 +15,12 @@ use Psr\EventDispatcher\StoppableEventInterface;
 abstract class TaskEvent implements StoppableEventInterface
 {
     private bool $propagationStopped = false;
+    private Task $task;
 
     public function __construct(
-        private readonly Task $task
+        Task $task
     ) {
+        $this->task = $task;
     }
 
     public function getTask(): Task

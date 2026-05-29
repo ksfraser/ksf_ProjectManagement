@@ -17,26 +17,63 @@ use DateTimeInterface;
 
 class ProjectDTO
 {
+    private ?string $projectId = null;
+    private string $name = '';
+    private string $description = '';
+    private string $startDate = '';
+    private ?string $endDate = null;
+    private float $budget = 0.0;
+    private string $customerId = '';
+    private string $projectManager = '';
+    private string $priority = 'Medium';
+    private string $status = 'Planning';
+    private int $taskCount = 0;
+    private int $completedTaskCount = 0;
+    private float $overallProgress = 0.0;
+    private array $files = [];
+    private array $team = [];
+    private ?string $createdAt = null;
+    private ?string $updatedAt = null;
+    private bool $inactive = false;
+
     public function __construct(
-        private readonly ?string $projectId = null,
-        private readonly string $name = '',
-        private readonly string $description = '',
-        private readonly string $startDate = '',
-        private readonly ?string $endDate = null,
-        private readonly float $budget = 0.0,
-        private readonly string $customerId = '',
-        private readonly string $projectManager = '',
-        private readonly string $priority = 'Medium',
-        private readonly string $status = 'Planning',
-        private readonly int $taskCount = 0,
-        private readonly int $completedTaskCount = 0,
-        private readonly float $overallProgress = 0.0,
-        private readonly array $files = [],
-        private readonly array $team = [],
-        private readonly ?string $createdAt = null,
-        private readonly ?string $updatedAt = null,
-        private readonly bool $inactive = false
+        ?string $projectId = null,
+        string $name = '',
+        string $description = '',
+        string $startDate = '',
+        ?string $endDate = null,
+        float $budget = 0.0,
+        string $customerId = '',
+        string $projectManager = '',
+        string $priority = 'Medium',
+        string $status = 'Planning',
+        int $taskCount = 0,
+        int $completedTaskCount = 0,
+        float $overallProgress = 0.0,
+        array $files = [],
+        array $team = [],
+        ?string $createdAt = null,
+        ?string $updatedAt = null,
+        bool $inactive = false
     ) {
+        $this->projectId = $projectId;
+        $this->name = $name;
+        $this->description = $description;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+        $this->budget = $budget;
+        $this->customerId = $customerId;
+        $this->projectManager = $projectManager;
+        $this->priority = $priority;
+        $this->status = $status;
+        $this->taskCount = $taskCount;
+        $this->completedTaskCount = $completedTaskCount;
+        $this->overallProgress = $overallProgress;
+        $this->files = $files;
+        $this->team = $team;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
+        $this->inactive = $inactive;
     }
 
     public function getProjectId(): ?string
@@ -178,40 +215,42 @@ class ProjectDTO
     public static function fromArray(array $data): self
     {
         return new self(
-            projectId: $data['project_id'] ?? null,
-            name: $data['name'] ?? '',
-            description: $data['description'] ?? '',
-            startDate: $data['start_date'] ?? '',
-            endDate: $data['end_date'] ?? null,
-            budget: (float) ($data['budget'] ?? 0.0),
-            customerId: $data['customer_id'] ?? '',
-            projectManager: $data['project_manager'] ?? '',
-            priority: $data['priority'] ?? 'Medium',
-            status: $data['status'] ?? 'Planning',
-            taskCount: (int) ($data['task_count'] ?? 0),
-            completedTaskCount: (int) ($data['completed_task_count'] ?? 0),
-            overallProgress: (float) ($data['overall_progress'] ?? 0.0),
-            files: $data['files'] ?? [],
-            team: $data['team'] ?? [],
-            createdAt: $data['created_at'] ?? null,
-            updatedAt: $data['updated_at'] ?? null,
-            inactive: (bool) ($data['inactive'] ?? false)
+            $data['project_id'] ?? null,
+            $data['name'] ?? '',
+            $data['description'] ?? '',
+            $data['start_date'] ?? '',
+            $data['end_date'] ?? null,
+            (float) ($data['budget'] ?? 0.0),
+            $data['customer_id'] ?? '',
+            $data['project_manager'] ?? '',
+            $data['priority'] ?? 'Medium',
+            $data['status'] ?? 'Planning',
+            (int) ($data['task_count'] ?? 0),
+            (int) ($data['completed_task_count'] ?? 0),
+            (float) ($data['overall_progress'] ?? 0.0),
+            $data['files'] ?? [],
+            $data['team'] ?? [],
+            $data['created_at'] ?? null,
+            $data['updated_at'] ?? null,
+            (bool) ($data['inactive'] ?? false)
         );
     }
 
     public static function fromEntity(\Ksfraser\ProjectManagement\Entity\Project $entity): self
     {
+        $endDate = $entity->getEndDate() !== null ? $entity->getEndDate()->format('Y-m-d') : null;
+
         return new self(
-            projectId: $entity->getProjectId(),
-            name: $entity->getName(),
-            description: $entity->getDescription(),
-            startDate: $entity->getStartDate()->format('Y-m-d'),
-            endDate: $entity->getEndDate()?->format('Y-m-d'),
-            budget: $entity->getBudget(),
-            customerId: $entity->getCustomerId(),
-            projectManager: $entity->getProjectManager(),
-            priority: $entity->getPriority(),
-            status: $entity->getStatus()
+            $entity->getProjectId(),
+            $entity->getName(),
+            $entity->getDescription(),
+            $entity->getStartDate()->format('Y-m-d'),
+            $endDate,
+            $entity->getBudget(),
+            $entity->getCustomerId(),
+            $entity->getProjectManager(),
+            $entity->getPriority(),
+            $entity->getStatus()
         );
     }
 }

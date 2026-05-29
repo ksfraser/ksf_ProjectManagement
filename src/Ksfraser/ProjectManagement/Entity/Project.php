@@ -182,7 +182,7 @@ class Project
             'name' => $this->name,
             'description' => $this->description,
             'start_date' => $this->startDate->format(DateTimeInterface::ATOM),
-            'end_date' => $this->endDate?->format(DateTimeInterface::ATOM),
+            'end_date' => $this->endDate !== null ? $this->endDate->format(DateTimeInterface::ATOM) : null,
             'budget' => $this->budget,
             'customer_id' => $this->customerId,
             'project_manager' => $this->projectManager,

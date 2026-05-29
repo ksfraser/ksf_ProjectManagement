@@ -15,10 +15,12 @@ use Psr\EventDispatcher\StoppableEventInterface;
 abstract class ProjectEvent implements StoppableEventInterface
 {
     private bool $propagationStopped = false;
+    private Project $project;
 
     public function __construct(
-        private readonly Project $project
+        Project $project
     ) {
+        $this->project = $project;
     }
 
     public function getProject(): Project

@@ -11,20 +11,45 @@ namespace Ksfraser\ProjectManagement\DTO\Assignment;
 
 class AssignmentDTO
 {
+    private string $projectId;
+    private string $employeeId;
+    private string $role;
+    private string $startDate;
+    private ?string $endDate = null;
+    private float $allocationPercentage = 100.0;
+    private ?string $employeeName = null;
+    private ?string $email = null;
+    private ?string $jobTitle = null;
+    private ?string $department = null;
+    private bool $isActive = true;
+    private ?string $createdAt = null;
+
     public function __construct(
-        private readonly string $projectId,
-        private readonly string $employeeId,
-        private readonly string $role,
-        private readonly string $startDate,
-        private readonly ?string $endDate = null,
-        private readonly float $allocationPercentage = 100.0,
-        private readonly ?string $employeeName = null,
-        private readonly ?string $email = null,
-        private readonly ?string $jobTitle = null,
-        private readonly ?string $department = null,
-        private readonly bool $isActive = true,
-        private readonly ?string $createdAt = null
+        string $projectId,
+        string $employeeId,
+        string $role,
+        string $startDate,
+        ?string $endDate = null,
+        float $allocationPercentage = 100.0,
+        ?string $employeeName = null,
+        ?string $email = null,
+        ?string $jobTitle = null,
+        ?string $department = null,
+        bool $isActive = true,
+        ?string $createdAt = null
     ) {
+        $this->projectId = $projectId;
+        $this->employeeId = $employeeId;
+        $this->role = $role;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+        $this->allocationPercentage = $allocationPercentage;
+        $this->employeeName = $employeeName;
+        $this->email = $email;
+        $this->jobTitle = $jobTitle;
+        $this->department = $department;
+        $this->isActive = $isActive;
+        $this->createdAt = $createdAt;
     }
 
     public function getProjectId(): string
@@ -108,30 +133,32 @@ class AssignmentDTO
     public static function fromArray(array $data): self
     {
         return new self(
-            projectId: $data['project_id'] ?? '',
-            employeeId: $data['employee_id'] ?? '',
-            role: $data['role'] ?? 'Team Member',
-            startDate: $data['start_date'] ?? '',
-            endDate: $data['end_date'] ?? null,
-            allocationPercentage: (float) ($data['allocation_percentage'] ?? 100.0),
-            employeeName: $data['employee_name'] ?? null,
-            email: $data['email'] ?? null,
-            jobTitle: $data['job_title'] ?? null,
-            department: $data['department'] ?? null,
-            isActive: (bool) ($data['is_active'] ?? true),
-            createdAt: $data['created_at'] ?? null
+            $data['project_id'] ?? '',
+            $data['employee_id'] ?? '',
+            $data['role'] ?? 'Team Member',
+            $data['start_date'] ?? '',
+            $data['end_date'] ?? null,
+            (float) ($data['allocation_percentage'] ?? 100.0),
+            $data['employee_name'] ?? null,
+            $data['email'] ?? null,
+            $data['job_title'] ?? null,
+            $data['department'] ?? null,
+            (bool) ($data['is_active'] ?? true),
+            $data['created_at'] ?? null
         );
     }
 
     public static function fromEntity(\Ksfraser\ProjectManagement\Entity\ProjectAssignment $entity): self
     {
+        $endDate = $entity->getEndDate() !== null ? $entity->getEndDate()->format('Y-m-d') : null;
+
         return new self(
-            projectId: $entity->getProjectId(),
-            employeeId: $entity->getEmployeeId(),
-            role: $entity->getRole(),
-            startDate: $entity->getStartDate()->format('Y-m-d'),
-            endDate: $entity->getEndDate()?->format('Y-m-d'),
-            allocationPercentage: $entity->getAllocationPercentage()
+            $entity->getProjectId(),
+            $entity->getEmployeeId(),
+            $entity->getRole(),
+            $entity->getStartDate()->format('Y-m-d'),
+            $endDate,
+            $entity->getAllocationPercentage()
         );
     }
 }

@@ -13,10 +13,13 @@ use Ksfraser\ProjectManagement\Entity\Project;
 
 class ProjectUpdatedEvent extends ProjectEvent
 {
+    private array $changedFields = [];
+
     public function __construct(
         Project $project,
-        private readonly array $changedFields = []
+        array $changedFields = []
     ) {
+        $this->changedFields = $changedFields;
         parent::__construct($project);
     }
 

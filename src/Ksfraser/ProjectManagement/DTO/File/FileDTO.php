@@ -179,7 +179,7 @@ class FileDTO
             'storage_type' => $this->storageType,
             'storage_path' => $this->storagePath,
             'uploaded_by' => $this->uploadedBy,
-            'uploaded_at' => $this->uploadedAt?->format(DateTimeInterface::ATOM),
+            'uploaded_at' => $this->uploadedAt !== null ? $this->uploadedAt->format(DateTimeInterface::ATOM) : null,
             'description' => $this->description,
             'inactive' => $this->inactive,
         ];
@@ -195,19 +195,19 @@ class FileDTO
         }
 
         return new self(
-            entityType: $data['entity_type'] ?? '',
-            entityId: $data['entity_id'] ?? '',
-            fileName: $data['file_name'] ?? '',
-            originalName: $data['original_name'] ?? '',
-            mimeType: $data['mime_type'] ?? 'application/octet-stream',
-            size: (int) ($data['size'] ?? 0),
-            storageType: $data['storage_type'] ?? 'local',
-            storagePath: $data['storage_path'] ?? '',
-            id: isset($data['id']) ? (int) $data['id'] : null,
-            uploadedBy: $data['uploaded_by'] ?? null,
-            uploadedAt: $uploadedAt,
-            description: $data['description'] ?? '',
-            inactive: (bool) ($data['inactive'] ?? false)
+            $data['entity_type'] ?? '',
+            $data['entity_id'] ?? '',
+            $data['file_name'] ?? '',
+            $data['original_name'] ?? '',
+            $data['mime_type'] ?? 'application/octet-stream',
+            (int) ($data['size'] ?? 0),
+            $data['storage_type'] ?? 'local',
+            $data['storage_path'] ?? '',
+            isset($data['id']) ? (int) $data['id'] : null,
+            $data['uploaded_by'] ?? null,
+            $uploadedAt,
+            $data['description'] ?? '',
+            (bool) ($data['inactive'] ?? false)
         );
     }
 
@@ -227,15 +227,18 @@ class FileDTO
         $fileName = uniqid('proj_', true) . '_' . basename($originalName);
 
         return new self(
-            entityType: $entityType,
-            entityId: $entityId,
-            fileName: $fileName,
-            originalName: $originalName,
-            mimeType: $mimeType,
-            size: $size,
-            uploadedBy: $uploadedBy,
-            uploadedAt: new DateTime(),
-            description: $description
+            $entityType,
+            $entityId,
+            $fileName,
+            $originalName,
+            $mimeType,
+            $size,
+            'local',
+            '',
+            null,
+            $uploadedBy,
+            new DateTime(),
+            $description
         );
     }
 }

@@ -18,9 +18,12 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
 {
     private const TABLE = 'fa_pm_tasks';
 
+    private DatabaseAdapterInterface $db;
+
     public function __construct(
-        private readonly DatabaseAdapterInterface $db
+        DatabaseAdapterInterface $db
     ) {
+        $this->db = $db;
     }
 
     public function find(string $taskId): ?Task
@@ -128,8 +131,8 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
             $task->getName(),
             $task->getDescription(),
             $task->getAssignedTo(),
-            $task->getStartDate()?->format('Y-m-d'),
-            $task->getEndDate()?->format('Y-m-d'),
+            $task->getStartDate() !== null ? $task->getStartDate()->format('Y-m-d') : null,
+            $task->getEndDate() !== null ? $task->getEndDate()->format('Y-m-d') : null,
             $task->getEstimatedHours(),
             $task->getActualHours(),
             $task->getProgress(),
@@ -159,8 +162,8 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
             $task->getName(),
             $task->getDescription(),
             $task->getAssignedTo(),
-            $task->getStartDate()?->format('Y-m-d'),
-            $task->getEndDate()?->format('Y-m-d'),
+            $task->getStartDate() !== null ? $task->getStartDate()->format('Y-m-d') : null,
+            $task->getEndDate() !== null ? $task->getEndDate()->format('Y-m-d') : null,
             $task->getEstimatedHours(),
             $task->getActualHours(),
             $task->getProgress(),

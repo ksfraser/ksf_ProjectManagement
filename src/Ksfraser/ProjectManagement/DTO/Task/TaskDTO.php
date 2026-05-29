@@ -11,28 +11,69 @@ namespace Ksfraser\ProjectManagement\DTO\Task;
 
 class TaskDTO
 {
+    private ?string $taskId = null;
+    private string $projectId = '';
+    private string $parentTaskId = '';
+    private string $name = '';
+    private string $description = '';
+    private string $assignedTo = '';
+    private ?string $assignedToName = null;
+    private string $startDate = '';
+    private ?string $endDate = null;
+    private float $estimatedHours = 0.0;
+    private float $actualHours = 0.0;
+    private float $progress = 0.0;
+    private string $priority = 'Medium';
+    private string $status = 'Not Started';
+    private array $subtasks = [];
+    private array $files = [];
+    private array $timeEntries = [];
+    private ?string $createdAt = null;
+    private ?string $updatedAt = null;
+    private bool $inactive = false;
+
     public function __construct(
-        private readonly ?string $taskId = null,
-        private readonly string $projectId = '',
-        private readonly string $parentTaskId = '',
-        private readonly string $name = '',
-        private readonly string $description = '',
-        private readonly string $assignedTo = '',
-        private readonly ?string $assignedToName = null,
-        private readonly string $startDate = '',
-        private readonly ?string $endDate = null,
-        private readonly float $estimatedHours = 0.0,
-        private readonly float $actualHours = 0.0,
-        private readonly float $progress = 0.0,
-        private readonly string $priority = 'Medium',
-        private readonly string $status = 'Not Started',
-        private readonly array $subtasks = [],
-        private readonly array $files = [],
-        private readonly array $timeEntries = [],
-        private readonly ?string $createdAt = null,
-        private readonly ?string $updatedAt = null,
-        private readonly bool $inactive = false
+        ?string $taskId = null,
+        string $projectId = '',
+        string $parentTaskId = '',
+        string $name = '',
+        string $description = '',
+        string $assignedTo = '',
+        ?string $assignedToName = null,
+        string $startDate = '',
+        ?string $endDate = null,
+        float $estimatedHours = 0.0,
+        float $actualHours = 0.0,
+        float $progress = 0.0,
+        string $priority = 'Medium',
+        string $status = 'Not Started',
+        array $subtasks = [],
+        array $files = [],
+        array $timeEntries = [],
+        ?string $createdAt = null,
+        ?string $updatedAt = null,
+        bool $inactive = false
     ) {
+        $this->taskId = $taskId;
+        $this->projectId = $projectId;
+        $this->parentTaskId = $parentTaskId;
+        $this->name = $name;
+        $this->description = $description;
+        $this->assignedTo = $assignedTo;
+        $this->assignedToName = $assignedToName;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+        $this->estimatedHours = $estimatedHours;
+        $this->actualHours = $actualHours;
+        $this->progress = $progress;
+        $this->priority = $priority;
+        $this->status = $status;
+        $this->subtasks = $subtasks;
+        $this->files = $files;
+        $this->timeEntries = $timeEntries;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
+        $this->inactive = $inactive;
     }
 
     public function getTaskId(): ?string
@@ -195,45 +236,49 @@ class TaskDTO
     public static function fromArray(array $data): self
     {
         return new self(
-            taskId: $data['task_id'] ?? null,
-            projectId: $data['project_id'] ?? '',
-            parentTaskId: $data['parent_task_id'] ?? '',
-            name: $data['name'] ?? '',
-            description: $data['description'] ?? '',
-            assignedTo: $data['assigned_to'] ?? '',
-            assignedToName: $data['assigned_to_name'] ?? null,
-            startDate: $data['start_date'] ?? '',
-            endDate: $data['end_date'] ?? null,
-            estimatedHours: (float) ($data['estimated_hours'] ?? 0.0),
-            actualHours: (float) ($data['actual_hours'] ?? 0.0),
-            progress: (float) ($data['progress'] ?? 0.0),
-            priority: $data['priority'] ?? 'Medium',
-            status: $data['status'] ?? 'Not Started',
-            subtasks: $data['subtasks'] ?? [],
-            files: $data['files'] ?? [],
-            timeEntries: $data['time_entries'] ?? [],
-            createdAt: $data['created_at'] ?? null,
-            updatedAt: $data['updated_at'] ?? null,
-            inactive: (bool) ($data['inactive'] ?? false)
+            $data['task_id'] ?? null,
+            $data['project_id'] ?? '',
+            $data['parent_task_id'] ?? '',
+            $data['name'] ?? '',
+            $data['description'] ?? '',
+            $data['assigned_to'] ?? '',
+            $data['assigned_to_name'] ?? null,
+            $data['start_date'] ?? '',
+            $data['end_date'] ?? null,
+            (float) ($data['estimated_hours'] ?? 0.0),
+            (float) ($data['actual_hours'] ?? 0.0),
+            (float) ($data['progress'] ?? 0.0),
+            $data['priority'] ?? 'Medium',
+            $data['status'] ?? 'Not Started',
+            $data['subtasks'] ?? [],
+            $data['files'] ?? [],
+            $data['time_entries'] ?? [],
+            $data['created_at'] ?? null,
+            $data['updated_at'] ?? null,
+            (bool) ($data['inactive'] ?? false)
         );
     }
 
     public static function fromEntity(\Ksfraser\ProjectManagement\Entity\Task $entity): self
     {
+        $startDate = $entity->getStartDate() !== null ? $entity->getStartDate()->format('Y-m-d') : '';
+        $endDate = $entity->getEndDate() !== null ? $entity->getEndDate()->format('Y-m-d') : null;
+
         return new self(
-            taskId: $entity->getTaskId(),
-            projectId: $entity->getProjectId(),
-            parentTaskId: $entity->getParentTaskId(),
-            name: $entity->getName(),
-            description: $entity->getDescription(),
-            assignedTo: $entity->getAssignedTo(),
-            startDate: $entity->getStartDate()?->format('Y-m-d') ?? '',
-            endDate: $entity->getEndDate()?->format('Y-m-d'),
-            estimatedHours: $entity->getEstimatedHours(),
-            actualHours: $entity->getActualHours(),
-            progress: $entity->getProgress(),
-            priority: $entity->getPriority(),
-            status: $entity->getStatus()
+            $entity->getTaskId(),
+            $entity->getProjectId(),
+            $entity->getParentTaskId(),
+            $entity->getName(),
+            $entity->getDescription(),
+            $entity->getAssignedTo(),
+            null,
+            $startDate,
+            $endDate,
+            $entity->getEstimatedHours(),
+            $entity->getActualHours(),
+            $entity->getProgress(),
+            $entity->getPriority(),
+            $entity->getStatus()
         );
     }
 }

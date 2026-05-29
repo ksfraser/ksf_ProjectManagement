@@ -20,9 +20,12 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
 {
     private const TABLE = 'fa_pm_projects';
 
+    private DatabaseAdapterInterface $db;
+
     public function __construct(
-        private readonly DatabaseAdapterInterface $db
+        DatabaseAdapterInterface $db
     ) {
+        $this->db = $db;
     }
 
     public function find(string $projectId): ?Project
@@ -138,7 +141,7 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
             $project->getName(),
             $project->getDescription(),
             $project->getStartDate()->format('Y-m-d'),
-            $project->getEndDate()?->format('Y-m-d'),
+            $project->getEndDate() !== null ? $project->getEndDate()->format('Y-m-d') : null,
             $project->getBudget(),
             $project->getCustomerId(),
             $project->getProjectManager(),
@@ -165,7 +168,7 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
             $project->getName(),
             $project->getDescription(),
             $project->getStartDate()->format('Y-m-d'),
-            $project->getEndDate()?->format('Y-m-d'),
+            $project->getEndDate() !== null ? $project->getEndDate()->format('Y-m-d') : null,
             $project->getBudget(),
             $project->getCustomerId(),
             $project->getProjectManager(),

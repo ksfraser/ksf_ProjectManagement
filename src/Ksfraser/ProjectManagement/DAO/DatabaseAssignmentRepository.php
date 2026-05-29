@@ -18,9 +18,12 @@ class DatabaseAssignmentRepository implements AssignmentRepositoryInterface
 {
     private const TABLE = 'fa_pm_assignments';
 
+    private DatabaseAdapterInterface $db;
+
     public function __construct(
-        private readonly DatabaseAdapterInterface $db
+        DatabaseAdapterInterface $db
     ) {
+        $this->db = $db;
     }
 
     public function findByProjectAndEmployee(string $projectId, string $employeeId): ?ProjectAssignment
@@ -106,7 +109,7 @@ class DatabaseAssignmentRepository implements AssignmentRepositoryInterface
             $assignment->getEmployeeId(),
             $assignment->getRole(),
             $assignment->getStartDate()->format('Y-m-d'),
-            $assignment->getEndDate()?->format('Y-m-d'),
+            $assignment->getEndDate() !== null ? $assignment->getEndDate()->format('Y-m-d') : null,
             $assignment->getAllocationPercentage()
         ]);
     }
@@ -123,7 +126,7 @@ class DatabaseAssignmentRepository implements AssignmentRepositoryInterface
         $this->db->executeUpdate($sql, [
             $assignment->getRole(),
             $assignment->getStartDate()->format('Y-m-d'),
-            $assignment->getEndDate()?->format('Y-m-d'),
+            $assignment->getEndDate() !== null ? $assignment->getEndDate()->format('Y-m-d') : null,
             $assignment->getAllocationPercentage(),
             $assignment->getProjectId(),
             $assignment->getEmployeeId()

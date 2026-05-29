@@ -114,7 +114,7 @@ class ProjectAssignment
             'employee_id' => $this->employeeId,
             'role' => $this->role,
             'start_date' => $this->startDate->format(DateTimeInterface::ATOM),
-            'end_date' => $this->endDate?->format(DateTimeInterface::ATOM),
+            'end_date' => $this->endDate !== null ? $this->endDate->format(DateTimeInterface::ATOM) : null,
             'allocation_percentage' => $this->allocationPercentage,
         ];
     }

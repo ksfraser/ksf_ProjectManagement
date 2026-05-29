@@ -24,12 +24,21 @@ class ProjectFileService
     private const TABLE_FILES = 'fa_pm_files';
     private const TABLE_PREFIX = 'fa_pm_';
 
+    private DatabaseAdapterInterface $db;
+    private FileServiceInterface $fileService;
+    private EventDispatcherInterface $events;
+    private LoggerInterface $logger;
+
     public function __construct(
-        private readonly DatabaseAdapterInterface $db,
-        private readonly FileServiceInterface $fileService,
-        private readonly EventDispatcherInterface $events,
-        private readonly LoggerInterface $logger
+        DatabaseAdapterInterface $db,
+        FileServiceInterface $fileService,
+        EventDispatcherInterface $events,
+        LoggerInterface $logger
     ) {
+        $this->db = $db;
+        $this->fileService = $fileService;
+        $this->events = $events;
+        $this->logger = $logger;
     }
 
     public function attachFile(FileDTO $file, string $uploadedTmpPath): bool
@@ -129,11 +138,13 @@ class ProjectFileService
 
     private function getStorageDir(string $entityType): string
     {
-        return match ($entityType) {
-            'project' => 'projects',
-            'task' => 'tasks',
-            default => 'misc',
-        };
+        if ($entityType === 'project') {
+            return 'projects';
+        } elseif ($entityType === 'task') {
+            return 'tasks';
+        } else {
+            return 'misc';
+        }
     }
 
     private function saveFileRecord(FileDTO $file, string $storagePath): int|string
