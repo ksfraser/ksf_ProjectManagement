@@ -240,3 +240,14 @@ All development is done in the **devel tree** (`~/Documents/ksf_ProjectManagemen
 
 *No UAT bind point in `~/ksf_Infrastructure/fa_modules/ksf_ProjectManagement` — this repo is consumed via Composer path repos or other means.*
 
+
+---
+
+## Architecture docs (hardlinked)
+
+Canonical ecosystem/architecture docs are hardlinked in this repo root
+(mode 0444): `MODULE_DIRECTORY.md`, `APP_TAB_ARCHITECTURE.md`, `PACKAGIST.md`.
+Hardlinks do NOT survive `git pull`/`checkout`/`clone` — after any git
+operation re-run:
+`ln -f /home/kevin/Documents/<doc> <repo-root>/<doc>`
+Full rule + carrier list: `/home/kevin/Documents/AGENTS_APPENDIX.md`.
