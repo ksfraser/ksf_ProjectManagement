@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Ksfraser\ProjectManagement\DAO;
 
 use DateTime;
-use Ksfraser\ProjectManagement\Contract\DatabaseAdapterInterface;
+use ksfraser\CommonDb\Contract\DbConnectionInterface;
 use Ksfraser\ProjectManagement\Entity\Project;
 use Ksfraser\ProjectManagement\Repository\ProjectRepositoryInterface;
 
@@ -20,10 +20,10 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
 {
     private const TABLE = 'fa_pm_projects';
 
-    private DatabaseAdapterInterface $db;
+    private DbConnectionInterface $db;
 
     public function __construct(
-        DatabaseAdapterInterface $db
+        DbConnectionInterface $db
     ) {
         $this->db = $db;
     }

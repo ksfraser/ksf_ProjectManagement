@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Ksfraser\ProjectManagement\Tests\Unit;
 
 use DateTime;
-use Ksfraser\ProjectManagement\Contract\DatabaseAdapterInterface;
+use ksfraser\CommonDb\Contract\DbConnectionInterface;
 use Ksfraser\ProjectManagement\Contract\EmployeeServiceInterface;
 use Ksfraser\ProjectManagement\Entity\Project;
 use Ksfraser\ProjectManagement\Entity\Task;
@@ -25,7 +25,7 @@ use Psr\Log\LoggerInterface;
 
 class ProjectServiceTest extends TestCase
 {
-    private DatabaseAdapterInterface $db;
+    private DbConnectionInterface $db;
     private EventDispatcherInterface $events;
     private LoggerInterface $logger;
     private EmployeeServiceInterface $employeeService;
@@ -33,7 +33,7 @@ class ProjectServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->db = $this->createMock(DatabaseAdapterInterface::class);
+        $this->db = $this->createMock(DbConnectionInterface::class);
         $this->events = $this->createMock(EventDispatcherInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->employeeService = $this->createMock(EmployeeServiceInterface::class);

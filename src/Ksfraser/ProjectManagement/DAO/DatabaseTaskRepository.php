@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Ksfraser\ProjectManagement\DAO;
 
 use DateTime;
-use Ksfraser\ProjectManagement\Contract\DatabaseAdapterInterface;
+use ksfraser\CommonDb\Contract\DbConnectionInterface;
 use Ksfraser\ProjectManagement\Entity\Task;
 use Ksfraser\ProjectManagement\Repository\TaskRepositoryInterface;
 
@@ -18,10 +18,10 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
 {
     private const TABLE = 'fa_pm_tasks';
 
-    private DatabaseAdapterInterface $db;
+    private DbConnectionInterface $db;
 
     public function __construct(
-        DatabaseAdapterInterface $db
+        DbConnectionInterface $db
     ) {
         $this->db = $db;
     }

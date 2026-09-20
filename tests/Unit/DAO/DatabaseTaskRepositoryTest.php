@@ -10,19 +10,19 @@ declare(strict_types=1);
 namespace Ksfraser\ProjectManagement\Tests\Unit\DAO;
 
 use DateTime;
-use Ksfraser\ProjectManagement\Contract\DatabaseAdapterInterface;
+use ksfraser\CommonDb\Contract\DbConnectionInterface;
 use Ksfraser\ProjectManagement\DAO\DatabaseTaskRepository;
 use Ksfraser\ProjectManagement\Entity\Task;
 use PHPUnit\Framework\TestCase;
 
 class DatabaseTaskRepositoryTest extends TestCase
 {
-    private DatabaseAdapterInterface $db;
+    private DbConnectionInterface $db;
     private DatabaseTaskRepository $repository;
 
     protected function setUp(): void
     {
-        $this->db = $this->createMock(DatabaseAdapterInterface::class);
+        $this->db = $this->createMock(DbConnectionInterface::class);
         $this->repository = new DatabaseTaskRepository($this->db);
     }
 

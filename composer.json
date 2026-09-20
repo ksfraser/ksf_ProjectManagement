@@ -12,7 +12,8 @@
         "frontaccounting"
     ],
     "require": {
-        "php": ">=7.3"
+        "php": ">=7.3",
+        "ksfraser/ksf-common-db": "^1.0"
     },
     "suggest": {
         "ksfraser/ksf-fa-common": "Transport adapters + WorkflowHooksTrait when embedding in FrontAccounting."

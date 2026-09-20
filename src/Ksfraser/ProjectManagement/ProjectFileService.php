@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Ksfraser\ProjectManagement;
 
-use Ksfraser\ProjectManagement\Contract\DatabaseAdapterInterface;
+use ksfraser\CommonDb\Contract\DbConnectionInterface;
 use Ksfraser\ProjectManagement\Contract\FileServiceInterface;
 use Ksfraser\ProjectManagement\DTO\File\FileDTO;
 use Ksfraser\ProjectManagement\Event\ProjectFileUploadedEvent;
@@ -24,13 +24,13 @@ class ProjectFileService
     private const TABLE_FILES = 'fa_pm_files';
     private const TABLE_PREFIX = 'fa_pm_';
 
-    private DatabaseAdapterInterface $db;
+    private DbConnectionInterface $db;
     private FileServiceInterface $fileService;
     private EventDispatcherInterface $events;
     private LoggerInterface $logger;
 
     public function __construct(
-        DatabaseAdapterInterface $db,
+        DbConnectionInterface $db,
         FileServiceInterface $fileService,
         EventDispatcherInterface $events,
         LoggerInterface $logger

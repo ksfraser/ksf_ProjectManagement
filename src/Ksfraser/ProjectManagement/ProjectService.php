@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Ksfraser\ProjectManagement;
 
 use DateTime;
-use Ksfraser\ProjectManagement\Contract\DatabaseAdapterInterface;
+use ksfraser\CommonDb\Contract\DbConnectionInterface;
 use Ksfraser\ProjectManagement\Contract\EmployeeServiceInterface;
 use Ksfraser\ProjectManagement\Contract\ProjectServiceInterface;
 use Ksfraser\ProjectManagement\Entity\Project;
@@ -35,13 +35,13 @@ class ProjectService implements ProjectServiceInterface
     private const TABLE_TASKS = 'fa_pm_tasks';
     private const TABLE_ASSIGNMENTS = 'fa_pm_assignments';
 
-    private DatabaseAdapterInterface $db;
+    private DbConnectionInterface $db;
     private EventDispatcherInterface $events;
     private LoggerInterface $logger;
     private EmployeeServiceInterface $employeeService;
 
     public function __construct(
-        DatabaseAdapterInterface $db,
+        DbConnectionInterface $db,
         EventDispatcherInterface $events,
         LoggerInterface $logger,
         EmployeeServiceInterface $employeeService
