@@ -3,23 +3,17 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
          colors="true"
-         cacheDirectory=".phpunit.cache"
-         executionOrder="depends,defects"
-         beStrictAboutOutputDuringTests="true">
+         failOnWarning="true"
+         failOnRisky="true"
+         cacheResult="false">
     <testsuites>
-        <testsuite name="Unit">
-            <directory>tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Integration">
-            <directory>tests/Integration</directory>
+        <testsuite name="ksf-ProjectManagement">
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
-    <source>
+    <coverage>
         <include>
             <directory suffix=".php">src</directory>
         </include>
-        <exclude>
-            <directory>src/Ksfraser/ProjectManagement/Exception</directory>
-        </exclude>
-    </source>
+    </coverage>
 </phpunit>

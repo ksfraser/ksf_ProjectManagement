@@ -1,17 +1,16 @@
 <?php
-/**
- * PHPUnit Bootstrap
- *
- * Sets up autoloading and test environment
- */
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+/*
+ * Standalone test bootstrap — NO FrontAccounting, NO transport, NO hooks.
+ * Pure Composer autoload for the Ksfraser\ProjectManagement namespace.
+ * PHP 7.3 compatible.
+ */
 
-if (!defined('TB_PREF')) {
-    define('TB_PREF', 'fa_');
+$autoload = dirname(__DIR__) . '/vendor/autoload.php';
+if (!file_exists($autoload)) {
+    fwrite(STDERR, "Run: composer install\n");
+    exit(2);
 }
-if (!defined('PROJECT_MANAGEMENT_TABLE_PREFIX')) {
-    define('PROJECT_MANAGEMENT_TABLE_PREFIX', 'fa_pm_');
-}
+require_once $autoload;
