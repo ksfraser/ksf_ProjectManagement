@@ -106,10 +106,10 @@ final class CpmEngineTest extends TestCase
         // b floats between a and c; c on critical path
         $tasks = [self::task('a', 'A', 3), self::task('b', 'B', 2), self::task('c', 'C', 10)];
         $deps = [self::dep('a', 'b'), self::dep('b', 'c')];
-        // make a start later than 0 so b has slack: add float via c duration only
+        // aa bypasses b (a->aa->c) so b floats off the critical path
         $r = $this->engine->run(
             array_merge($tasks, [self::task('aa', 'AA', 6)]),
-            array_merge($deps, [self::dep('a', 'aa'), self::dep('aa', 'b')])
+            array_merge($deps, [self::dep('a', 'aa'), self::dep('aa', 'c')])
         );
         // duration = 6?? compute present values, do not hard-code drift
         self::assertTrue($r['ok']);

@@ -180,7 +180,6 @@ class CpmEngine
                     case 'fs':
                     default:
                         $cand = $byId[$m]['ls'] - $lag;
-                        $cand = $byId[$m]['es'] - $byId[$n]['duration'] - $lag;
                         break;
                 }
                 if ($cand < $byId[$n]['lf']) {
