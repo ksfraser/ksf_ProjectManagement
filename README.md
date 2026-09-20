@@ -14,7 +14,7 @@ Advanced project management capabilities including project costing, resource all
 ## Requirements
 
 - FrontAccounting 2.4+
-- PHP 8.0+
+- PHP 7.3+ (floor; engine is 7.3-clean, platform 7.3.33 pinned)
 
 ## Future Development
 
