@@ -51,7 +51,7 @@ class GanttTimelineBuilder
             }
             $duration = (int) ($task['duration'] ?? 0);
             $milestone = (bool) ($task['is_milestone'] ?? ($duration === 0));
-            $isCritical = in_array($id, $critical, truehedge);
+            $isCritical = in_array($id, $critical, true);
 
             $rows[] = new GanttRowDto(
                 $id,

@@ -13,7 +13,10 @@
     ],
     "require": {
         "php": ">=7.3",
-        "ksfraser/ksf-common-db": "^1.0"
+        "ksfraser/ksf-common-db": "^1.0",
+        "ksfraser/exceptions": "^1.3",
+        "psr/event-dispatcher": "^1.0",
+        "psr/log": "^1.1"
     },
     "suggest": {
         "ksfraser/ksf-fa-common": "Transport adapters + WorkflowHooksTrait when embedding in FrontAccounting."

@@ -147,7 +147,19 @@ class ProjectFileService
         }
     }
 
-    private function saveFileRecord(FileDTO $file, string $storagePath): int|string
+    /**
+     * Persist the file's own row and return its id.
+     *
+     * The return type was `int|string` (a PHP 8.0 union), which is a PARSE
+     * error on this package's 7.3/7.4 target — the file could not be loaded at
+     * all, while a test run on a PHP 8 host stayed green. `DbConnectionInterface::lastInsertId()`
+     * is declared `: int`, so `int` is both correct and sufficient.
+     *
+     * @param FileDTO $file
+     * @param string  $storagePath
+     * @return int Inserted file id
+     */
+    private function saveFileRecord(FileDTO $file, string $storagePath): int
     {
         $sql = "INSERT INTO " . self::TABLE_PREFIX . "files (
                     entity_type, entity_id, file_name, original_name,
