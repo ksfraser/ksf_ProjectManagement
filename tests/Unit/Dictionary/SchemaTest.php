@@ -17,7 +17,9 @@ use PHPUnit\Framework\TestCase;
  * @package Ksfraser\ProjectManagement
  * @since   1.0.0
  *
- * @BABOK Related: BR-012, FR-PM-006
+ * @BABOK Related: FR-PM-001, FR-PM-002, FR-PM-003 — the tables under test. Replaces
+ *   the previous `@BABOK BR-012`, which matches no ProjectDcs document in this repo
+ *   or in the FA wrapper.
  */
 final class SchemaTest extends TestCase
 {
@@ -27,7 +29,9 @@ final class SchemaTest extends TestCase
      * and is exactly the FA sql/ convention trap.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: FR-PM-001, FR-PM-002, FR-PM-003 — the dictionary must describe the tables those requirements persist
+ */
     public function testTableNamesAreLogicalAndUnprefixed(): void
     {
         $names = [
@@ -48,7 +52,9 @@ final class SchemaTest extends TestCase
      * definitionFor() — including the CPM dependency table.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: FR-PM-001, FR-PM-002, FR-PM-003 — the dictionary must describe the tables those requirements persist
+ */
     public function testDefinitionForResolvesEveryKnownTable(): void
     {
         $map = [
@@ -81,7 +87,9 @@ final class SchemaTest extends TestCase
      * it cannot silently drop out again.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: FR-PM-001, FR-PM-002, FR-PM-003 — the dictionary must describe the tables those requirements persist
+ */
     public function testCreateSqlsCoversEveryInstalledTable(): void
     {
         $sqls = Schema::createSqls();
@@ -99,7 +107,9 @@ final class SchemaTest extends TestCase
      * is_critical) are in the tasks() dictionary, not bolted on by the DAO.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: FR-PM-006-001 — the scheduling columns the CPM engine needs must exist in the dictionary
+ */
     public function testTasksDictionaryCarriesTheSchedulingColumns(): void
     {
         $def  = Schema::tasks();
@@ -119,7 +129,9 @@ final class SchemaTest extends TestCase
      * lag, with a uniqueness guard against a duplicated edge.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: FR-PM-006-003 — the dependency table the cycle guard reads
+ */
     public function testTaskDependenciesDictionaryShape(): void
     {
         $def = Schema::taskDependencies();
@@ -141,7 +153,9 @@ final class SchemaTest extends TestCase
      * `Schema::adapter()`; this package requires the connection to be injected.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard: the package must not construct an FA transport
+ */
     public function testSchemaExposesNoFaAdapterFactory(): void
     {
         $this->assertFalse(
@@ -160,9 +174,14 @@ final class SchemaTest extends TestCase
      * Comments and string literals blanked out, so prose that merely NAMES an
      * FA global (such as this package's consolidation note) cannot trip the
      * guard above. Byte offsets are preserved, so line numbers stay accurate.
-     */
+      *
+ * @BABOK Related: FR-PM-001, FR-PM-002, FR-PM-003 — the dictionary must describe the tables those requirements persist
+ */
     private function codeOnly(string $source): string
     {
+        /**
+         * @BABOK Related: FR-PM-001, FR-PM-002, FR-PM-003 — the dictionary must describe the tables those requirements persist
+         */
         $blank = static function (string $text): string {
             return preg_replace('/[^\n]/', ' ', $text);
         };

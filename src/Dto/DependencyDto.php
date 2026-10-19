@@ -9,6 +9,8 @@ namespace Ksfraser\ProjectManagement\Dto;
  *
  * @package Ksfraser\ProjectManagement
  * @since   1.0.0
+  *
+ * @BABOK Related: FR-PM-006-001 — the immutable precedence edge the CPM engine consumes
  */
 final class DependencyDto
 {
@@ -21,6 +23,9 @@ final class DependencyDto
     /** @var int */
     public $lag;
 
+    /**
+     * @BABOK Related: FR-PM-006-001 — precedence edge for the forward pass
+     */
     public function __construct(string $predecessor, string $successor, string $type = 'fs', int $lag = 0)
     {
         $this->predecessor = $predecessor;

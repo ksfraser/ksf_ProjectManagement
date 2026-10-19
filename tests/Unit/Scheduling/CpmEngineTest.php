@@ -27,6 +27,9 @@ class CpmEngineTest extends TestCase
     /** @var CpmEngine */
     private $engine;
 
+    /**
+     * @BABOK Related: FR-PM-006-001 — CPM engine behaviour
+     */
     protected function setUp(): void
     {
         $this->engine = new CpmEngine();
@@ -41,7 +44,9 @@ class CpmEngineTest extends TestCase
      * @param int                  $duration
      * @param array<string,mixed>  $extra
      * @return array<string,mixed>
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     private function task(string $id, int $duration, array $extra = []): array
     {
         return array_merge(['id' => $id, 'name' => $id, 'duration_days' => $duration], $extra);
@@ -53,7 +58,9 @@ class CpmEngineTest extends TestCase
      * @param string              $id
      * @param array<string,mixed> $extra
      * @return array<string,mixed>
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     private function milestone(string $id, array $extra = []): array
     {
         return array_merge(['id' => $id, 'name' => $id, 'duration_days' => 0, 'is_milestone' => true], $extra);
@@ -67,7 +74,9 @@ class CpmEngineTest extends TestCase
      * @param int                 $lag
      * @param array<string,mixed> $extra
      * @return array<string,mixed>
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     private function edge(string $from, string $to, int $lag = 0, array $extra = []): array
     {
         return array_merge([
@@ -83,7 +92,9 @@ class CpmEngineTest extends TestCase
      *
      * @param array<string,mixed> $result
      * @return array<string,mixed>
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     private function assertOk(array $result): array
     {
         $this->assertTrue($result['ok'] ?? false, 'CpmEngine::run must return ok=true');

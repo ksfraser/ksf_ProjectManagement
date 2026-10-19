@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Ksfraser\ProjectManagement\DTO\Task;
 
+/**
+ * @BABOK Related: FR-PM-002 — task transfer shape; also carries the FR-PM-004 progress fields and the FR-PM-005 overdue answer
+ */
 class TaskDTO
 {
     /** @var string|null */
@@ -52,6 +55,9 @@ class TaskDTO
     /** @var bool */
     private $inactive = false;
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function __construct(
         ?string $taskId = null,
         string $projectId = '',
@@ -96,111 +102,177 @@ class TaskDTO
         $this->inactive = $inactive;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getTaskId(): ?string
     {
         return $this->taskId;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getProjectId(): string
     {
         return $this->projectId;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getParentTaskId(): string
     {
         return $this->parentTaskId;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getAssignedTo(): string
     {
         return $this->assignedTo;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getAssignedToName(): ?string
     {
         return $this->assignedToName;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getStartDate(): string
     {
         return $this->startDate;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getEndDate(): ?string
     {
         return $this->endDate;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getEstimatedHours(): float
     {
         return $this->estimatedHours;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getActualHours(): float
     {
         return $this->actualHours;
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 — track progress 0-100%
+     */
     public function getProgress(): float
     {
         return $this->progress;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getPriority(): string
     {
         return $this->priority;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getStatus(): string
     {
         return $this->status;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getSubtasks(): array
     {
         return $this->subtasks;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getFiles(): array
     {
         return $this->files;
     }
 
+    /**
+     * @BABOK Related: FR-PM-006 — link time entries to tasks
+     */
     public function getTimeEntries(): array
     {
         return $this->timeEntries;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getCreatedAt(): ?string
     {
         return $this->createdAt;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getUpdatedAt(): ?string
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function isInactive(): bool
     {
         return $this->inactive;
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 — completion test feeding progress and overdue
+     */
     public function isCompleted(): bool
     {
         return $this->status === 'Completed' || $this->progress >= 100.0;
     }
 
+    /**
+     * @BABOK Related: FR-PM-005 — overdue detection
+     */
     public function isOverdue(): bool
     {
         if (empty($this->endDate)) {
@@ -209,16 +281,25 @@ class TaskDTO
         return !$this->isCompleted() && $this->endDate < date('Y-m-d');
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — parent-child relationship (BR-TASK-001)
+     */
     public function hasSubtasks(): bool
     {
         return !empty($this->subtasks);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — estimates vs actuals (BR-TASK-004)
+     */
     public function getRemainingHours(): float
     {
         return max(0.0, $this->estimatedHours - $this->actualHours);
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 — task roll-up basis
+     */
     public function getCompletionRatio(): float
     {
         if ($this->estimatedHours <= 0) {
@@ -227,6 +308,9 @@ class TaskDTO
         return min(100.0, ($this->actualHours / $this->estimatedHours) * 100.0);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function toArray(): array
     {
         return [
@@ -253,6 +337,9 @@ class TaskDTO
         ];
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — hydrate the DTO from a row/API payload
+     */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -279,6 +366,9 @@ class TaskDTO
         );
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — project an entity into the DTO
+     */
     public static function fromEntity(\Ksfraser\ProjectManagement\Entity\Task $entity): self
     {
         $startDate = $entity->getStartDate() !== null ? $entity->getStartDate()->format('Y-m-d') : '';

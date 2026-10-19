@@ -16,6 +16,9 @@ use ksfraser\CommonDb\Contract\DbConnectionInterface;
 use Ksfraser\ProjectManagement\Entity\Project;
 use Ksfraser\ProjectManagement\Repository\ProjectRepositoryInterface;
 
+/**
+ * @BABOK Related: FR-PM-001 — persistence for projects
+ */
 class DatabaseProjectRepository implements ProjectRepositoryInterface
 {
     private const TABLE = 'fa_pm_projects';
@@ -23,12 +26,18 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
     /** @var DbConnectionInterface */
     private $db;
 
+    /**
+     * @BABOK Related: FR-PM-001 — DI of the transport-agnostic DbConnectionInterface
+     */
     public function __construct(
         DbConnectionInterface $db
     ) {
         $this->db = $db;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — read a project by id
+     */
     public function find(string $projectId): ?Project
     {
         $sql = "SELECT * FROM " . self::TABLE . " WHERE project_id = ?";
@@ -41,6 +50,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         return $this->hydrate($row);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — read every project
+     */
     public function findAll(): array
     {
         $sql = "SELECT * FROM " . self::TABLE . " ORDER BY start_date DESC";
@@ -49,6 +61,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — persist a project
+     */
     public function save(Project $project): void
     {
         $exists = $this->find($project->getProjectId()) !== null;
@@ -60,12 +75,18 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         }
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — delete a project
+     */
     public function delete(string $projectId): void
     {
         $sql = "DELETE FROM " . self::TABLE . " WHERE project_id = ?";
         $this->db->executeUpdate($sql, [$projectId]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — status lifecycle filtering (BR-PM-005)
+     */
     public function findByStatus(string $status): array
     {
         $sql = "SELECT * FROM " . self::TABLE . " WHERE status = ? ORDER BY start_date DESC";
@@ -74,6 +95,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — link to CRM customer (BR-PM-003)
+     */
     public function findByCustomer(string $customerId): array
     {
         $sql = "SELECT * FROM " . self::TABLE . " WHERE customer_id = ? ORDER BY start_date DESC";
@@ -82,6 +106,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — assign project manager (BR-PM-004)
+     */
     public function findByManager(string $managerId): array
     {
         $sql = "SELECT * FROM " . self::TABLE . " WHERE project_manager = ? ORDER BY start_date DESC";
@@ -90,6 +117,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-005 — projects past their end date
+     */
     public function findOverdue(): array
     {
         $sql = "SELECT * FROM " . self::TABLE . "
@@ -102,6 +132,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — the in-scope project set for status views
+     */
     public function findActive(): array
     {
         $sql = "SELECT * FROM " . self::TABLE . "
@@ -114,6 +147,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project total
+     */
     public function count(): int
     {
         $sql = "SELECT COUNT(*) as cnt FROM " . self::TABLE;
@@ -122,6 +158,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         return (int) ($result['cnt'] ?? 0);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — status lifecycle roll-up (BR-PM-005)
+     */
     public function countByStatus(string $status): int
     {
         $sql = "SELECT COUNT(*) as cnt FROM " . self::TABLE . " WHERE status = ?";
@@ -130,6 +169,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         return (int) ($result['cnt'] ?? 0);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — insert path of save(); no requirement of its own
+     */
     private function insert(Project $project): void
     {
         $sql = "INSERT INTO " . self::TABLE . " (
@@ -151,6 +193,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — update path of save(); no requirement of its own
+     */
     private function update(Project $project): void
     {
         $sql = "UPDATE " . self::TABLE . " SET
@@ -179,6 +224,9 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — row-to-entity mapping; no requirement of its own
+     */
     private function hydrate(array $row): Project
     {
         $project = new Project(

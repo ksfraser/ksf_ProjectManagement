@@ -7,7 +7,10 @@ namespace Ksfraser\ProjectManagement\Entity;
 /**
  * Recognized project revenue from an imported FA order.
  *
- * @BABOK Related: FR-PM-010 - Project revenue recognition
+ * @BABOK Related: N/A — no requirement defined in this repo for revenue
+ *   recognition. Replaces the previous `@BABOK FR-PM-010`, which matches no
+ *   ProjectDcs document in this repo (FA-side FR-PM-010 is the app-shell/tab
+ *   surface, a different subject).
  * @since 1.0.0
  */
 class ProjectRevenue
@@ -33,6 +36,9 @@ class ProjectRevenue
     /** @var string */
     private $createdAt;
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function __construct(array $data)
     {
         $this->revenueId = (int)($data['revenue_id'] ?? 0);
@@ -47,17 +53,50 @@ class ProjectRevenue
         $this->createdAt = (string)($data['created_at'] ?? '');
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getRevenueId(): int { return $this->revenueId; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getProjectId(): string { return $this->projectId; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getFaOrderNo(): int { return $this->faOrderNo; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getFaTransType(): int { return $this->faTransType; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getSource(): string { return $this->source; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getSourceOrderId(): ?string { return $this->sourceOrderId; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getOrderTotal(): float { return $this->orderTotal; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getRevenueAmount(): float { return $this->revenueAmount; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getOrderDate(): string { return $this->orderDate; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function getCreatedAt(): string { return $this->createdAt; }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; see the class docblock
+     */
     public function toArray(): array
     {
         return [

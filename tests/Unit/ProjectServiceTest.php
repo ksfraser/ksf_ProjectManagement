@@ -23,6 +23,9 @@ use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @BABOK Related: FR-PM-001, FR-PM-002, FR-PM-003, FR-PM-004 — tests the aggregate service
+ */
 class ProjectServiceTest extends TestCase
 {
     /** @var DbConnectionInterface */
@@ -36,6 +39,9 @@ class ProjectServiceTest extends TestCase
     /** @var ProjectService */
     private $service;
 
+    /**
+     * @BABOK Related: FR-PM-001 — project aggregate service
+     */
     protected function setUp(): void
     {
         $this->db = $this->createMock(DbConnectionInterface::class);
@@ -51,6 +57,9 @@ class ProjectServiceTest extends TestCase
         );
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — create a project
+     */
     public function testCreateProjectSuccess(): void
     {
         $this->employeeService->method('employeeExists')->willReturn(true);
@@ -84,6 +93,9 @@ class ProjectServiceTest extends TestCase
         $this->assertSame('Active', $result->getStatus());
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project input guard
+     */
     public function testCreateProjectValidationFailsOnEmptyName(): void
     {
         $this->expectException(ValidationException::class);
@@ -95,6 +107,9 @@ class ProjectServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project input guard
+     */
     public function testCreateProjectValidationFailsOnMissingStartDate(): void
     {
         $this->expectException(ValidationException::class);
@@ -105,6 +120,9 @@ class ProjectServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — assign project manager (BR-PM-004)
+     */
     public function testCreateProjectValidationFailsOnMissingManager(): void
     {
         $this->expectException(ValidationException::class);
@@ -115,6 +133,9 @@ class ProjectServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — assign project manager (BR-PM-004)
+     */
     public function testCreateProjectValidationFailsOnInvalidManager(): void
     {
         $this->expectException(ValidationException::class);
@@ -128,6 +149,9 @@ class ProjectServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project input guard
+     */
     public function testCreateProjectValidationFailsOnEndDateBeforeStartDate(): void
     {
         $this->expectException(ValidationException::class);
@@ -141,6 +165,9 @@ class ProjectServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — read a project
+     */
     public function testGetProjectSuccess(): void
     {
         $this->db->method('fetchAssoc')
@@ -166,6 +193,9 @@ class ProjectServiceTest extends TestCase
         $this->assertSame(50000.0, $result->getBudget());
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — read a project
+     */
     public function testGetProjectThrowsNotFoundException(): void
     {
         $this->db->method('fetchAssoc')->willReturn(null);
@@ -174,6 +204,9 @@ class ProjectServiceTest extends TestCase
         $this->service->getProject('999');
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — edit a project
+     */
     public function testUpdateProjectSuccess(): void
     {
         $this->db->method('fetchAssoc')
@@ -199,6 +232,9 @@ class ProjectServiceTest extends TestCase
         $this->assertSame('High', $result->getPriority());
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — delete a project
+     */
     public function testDeleteProjectSuccess(): void
     {
         $this->db->method('fetchAssoc')
@@ -216,6 +252,9 @@ class ProjectServiceTest extends TestCase
         $this->service->deleteProject('1');
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — create a task
+     */
     public function testCreateTaskSuccess(): void
     {
         $this->db->method('fetchAssoc')
@@ -244,6 +283,9 @@ class ProjectServiceTest extends TestCase
         $this->assertSame('High', $result->getPriority());
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task input guard
+     */
     public function testCreateTaskValidationFailsOnMissingProjectId(): void
     {
         $this->expectException(ValidationException::class);
@@ -253,6 +295,9 @@ class ProjectServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task input guard
+     */
     public function testCreateTaskValidationFailsOnMissingName(): void
     {
         $this->expectException(ValidationException::class);
@@ -262,6 +307,9 @@ class ProjectServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task assignment (BR-TASK-002)
+     */
     public function testCreateTaskValidationFailsOnInvalidEmployee(): void
     {
         $this->db->method('fetchAssoc')
@@ -284,6 +332,9 @@ class ProjectServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — read a task
+     */
     public function testGetTaskSuccess(): void
     {
         $this->db->method('fetchAssoc')
@@ -311,6 +362,9 @@ class ProjectServiceTest extends TestCase
         $this->assertSame(50.0, $result->getProgress());
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — read a task
+     */
     public function testGetTaskThrowsNotFoundException(): void
     {
         $this->db->method('fetchAssoc')->willReturn(null);
@@ -319,6 +373,9 @@ class ProjectServiceTest extends TestCase
         $this->service->getTask('999');
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — the tasks of a project
+     */
     public function testGetProjectTasksReturnsArray(): void
     {
         $this->db->method('fetchAll')
@@ -354,6 +411,9 @@ class ProjectServiceTest extends TestCase
         $this->assertSame('Task 2', $result[1]->getName());
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 — track progress
+     */
     public function testUpdateTaskProgressSuccess(): void
     {
         $this->db->method('fetchAssoc')
@@ -375,6 +435,9 @@ class ProjectServiceTest extends TestCase
         $this->service->updateTaskProgress('1', 75.0, 'In Progress');
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocate an employee
+     */
     public function testAssignEmployeeToProjectSuccess(): void
     {
         $this->db->method('fetchAssoc')
@@ -400,6 +463,9 @@ class ProjectServiceTest extends TestCase
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — guard against duplicate allocation
+     */
     public function testAssignEmployeeToProjectFailsIfAlreadyAssigned(): void
     {
         $this->db->method('fetchAssoc')
@@ -420,6 +486,9 @@ class ProjectServiceTest extends TestCase
         $this->service->assignEmployeeToProject('1', 'emp1');
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — end an allocation
+     */
     public function testRemoveEmployeeFromProjectSuccess(): void
     {
         $this->db->expects($this->once())->method('executeUpdate');
@@ -428,6 +497,9 @@ class ProjectServiceTest extends TestCase
         $this->service->removeEmployeeFromProject('1', 'emp1');
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — the allocated team
+     */
     public function testGetProjectTeamReturnsArray(): void
     {
         $expectedTeam = [

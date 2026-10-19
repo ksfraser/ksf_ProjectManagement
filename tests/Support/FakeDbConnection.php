@@ -17,6 +17,8 @@ use ksfraser\CommonDb\Contract\DbConnectionInterface;
  *
  * @package Ksfraser\ProjectManagement
  * @since   1.0.0
+  *
+ * @BABOK Related: N/A — test double for DbConnectionInterface (unit tests only; PdoDbAdapter is never used at FA runtime)
  */
 final class FakeDbConnection implements DbConnectionInterface
 {
@@ -40,7 +42,9 @@ final class FakeDbConnection implements DbConnectionInterface
      *
      * @param array<int,array<int,array<string,mixed>>> $queue
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     public function queueSelects(array $queue): void
     {
         $this->selectQueue = $queue;
@@ -48,7 +52,9 @@ final class FakeDbConnection implements DbConnectionInterface
 
     /**
      * @return array<int,array{sql:string,params:array}>
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     public function writes(): array
     {
         return $this->writes;
@@ -56,7 +62,9 @@ final class FakeDbConnection implements DbConnectionInterface
 
     /**
      * @return array<int,array{sql:string,params:array}>
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     public function reads(): array
     {
         return $this->reads;
@@ -66,7 +74,9 @@ final class FakeDbConnection implements DbConnectionInterface
      * The SQL text of the most recent read or write.
      *
      * @return string
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     public function lastSql(): string
     {
         $last = end($this->log);
@@ -78,7 +88,9 @@ final class FakeDbConnection implements DbConnectionInterface
      * The bound parameters of the most recent read or write.
      *
      * @return array<string,mixed>
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     public function lastParams(): array
     {
         $last = end($this->log);
@@ -86,6 +98,9 @@ final class FakeDbConnection implements DbConnectionInterface
         return $last === false ? [] : $last['params'];
     }
 
+    /**
+     * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+     */
     public function fetchAssoc(string $sql, array $params = []): ?array
     {
         $rows = $this->nextRows();
@@ -95,6 +110,9 @@ final class FakeDbConnection implements DbConnectionInterface
         return $rows === [] ? null : $rows[0];
     }
 
+    /**
+     * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+     */
     public function fetchAll(string $sql, array $params = []): array
     {
         $rows = $this->nextRows();
@@ -104,6 +122,9 @@ final class FakeDbConnection implements DbConnectionInterface
         return $rows;
     }
 
+    /**
+     * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+     */
     public function fetchScalar(string $sql, array $params = [], $default = null)
     {
         $rows = $this->nextRows();
@@ -117,6 +138,9 @@ final class FakeDbConnection implements DbConnectionInterface
         return reset($first);
     }
 
+    /**
+     * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+     */
     public function executeUpdate(string $sql, array $params = []): int
     {
         $this->writes[] = ['sql' => $sql, 'params' => $params];
@@ -125,31 +149,48 @@ final class FakeDbConnection implements DbConnectionInterface
         return 1;
     }
 
+    /**
+     * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+     */
     public function lastInsertId(): int
     {
         return $this->nextId++;
     }
 
+    /**
+     * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+     */
     public function quote($value): string
     {
         return "'" . str_replace("'", "''", (string) $value) . "'";
     }
 
+    /**
+     * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+     */
     public function beginTransaction(): void
     {
     }
 
+    /**
+     * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+     */
     public function commit(): void
     {
     }
 
+    /**
+     * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+     */
     public function rollBack(): void
     {
     }
 
     /**
      * @return array<int,array<string,mixed>>
-     */
+      *
+ * @BABOK Related: N/A — test helper/assertion plumbing; carries no requirement of its own
+ */
     private function nextRows(): array
     {
         if ($this->selectQueue === []) {

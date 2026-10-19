@@ -14,6 +14,9 @@ namespace Ksfraser\ProjectManagement\Entity;
 use DateTime;
 use DateTimeInterface;
 
+/**
+ * @BABOK Related: FR-PM-001 — the Project aggregate; also implements FR-PM-004 progress and FR-PM-005 overdue
+ */
 class Project
 {
     /** @var string */
@@ -37,6 +40,9 @@ class Project
     /** @var string */
     private $status;
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function __construct(
         string $projectId,
         string $name,
@@ -56,110 +62,170 @@ class Project
         $this->status = 'Planning';
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getProjectId(): string
     {
         return $this->projectId;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — edit a project
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — edit a project
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
         return $this;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getStartDate(): DateTime
     {
         return $this->startDate;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — set dates
+     */
     public function setStartDate(DateTime $startDate): self
     {
         $this->startDate = $startDate;
         return $this;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getEndDate(): ?DateTime
     {
         return $this->endDate;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — set dates
+     */
     public function setEndDate(?DateTime $endDate): self
     {
         $this->endDate = $endDate;
         return $this;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getBudget(): float
     {
         return $this->budget;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — set budget (UC-PM-005)
+     */
     public function setBudget(float $budget): self
     {
         $this->budget = $budget;
         return $this;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getCustomerId(): string
     {
         return $this->customerId;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — link to CRM customer (BR-PM-003)
+     */
     public function setCustomerId(string $customerId): self
     {
         $this->customerId = $customerId;
         return $this;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getProjectManager(): string
     {
         return $this->projectManager;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — assign project manager (BR-PM-004)
+     */
     public function setProjectManager(string $projectManager): self
     {
         $this->projectManager = $projectManager;
         return $this;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getPriority(): string
     {
         return $this->priority;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — set priority
+     */
     public function setPriority(string $priority): self
     {
         $this->priority = $priority;
         return $this;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getStatus(): string
     {
         return $this->status;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — status lifecycle (BR-PM-005)
+     */
     public function setStatus(string $status): self
     {
         $this->status = $status;
         return $this;
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 §4.1 — duration calculation
+     */
     public function getDuration(): ?int
     {
         if ($this->endDate === null) {
@@ -168,6 +234,9 @@ class Project
         return $this->startDate->diff($this->endDate)->days;
     }
 
+    /**
+     * @BABOK Related: FR-PM-005 — overdue detection
+     */
     public function isOverdue(): bool
     {
         if ($this->endDate === null) {
@@ -176,6 +245,9 @@ class Project
         return $this->endDate < new DateTime() && $this->status !== 'Completed';
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 §4.3 — active status
+     */
     public function isActive(): bool
     {
         $now = new DateTime();
@@ -185,6 +257,9 @@ class Project
             && $this->status !== 'Cancelled';
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function toArray(): array
     {
         return [

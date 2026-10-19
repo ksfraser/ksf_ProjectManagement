@@ -19,6 +19,9 @@ use Ksfraser\ProjectManagement\Event\ProjectFileUploadedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+ */
 class ProjectFileService
 {
     private const TABLE_FILES = 'fa_pm_files';
@@ -33,6 +36,9 @@ class ProjectFileService
     /** @var LoggerInterface */
     private $logger;
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function __construct(
         DbConnectionInterface $db,
         FileServiceInterface $fileService,
@@ -45,6 +51,9 @@ class ProjectFileService
         $this->logger = $logger;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function attachFile(FileDTO $file, string $uploadedTmpPath): bool
     {
         $this->logger->info('Attaching file', [
@@ -73,6 +82,9 @@ class ProjectFileService
         return true;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getFilesForEntity(string $entityType, string $entityId): array
     {
         $sql = "SELECT * FROM " . self::TABLE_PREFIX . "files
@@ -84,6 +96,9 @@ class ProjectFileService
         return array_map(fn($row) => FileDTO::fromArray($row), $rows);
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getFile(int $fileId): ?FileDTO
     {
         $sql = "SELECT * FROM " . self::TABLE_PREFIX . "files WHERE id = ?";
@@ -96,6 +111,9 @@ class ProjectFileService
         return FileDTO::fromArray($row);
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function deleteFile(int $fileId): bool
     {
         $file = $this->getFile($fileId);
@@ -118,6 +136,9 @@ class ProjectFileService
         return true;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function downloadFile(int $fileId): ?string
     {
         $file = $this->getFile($fileId);
@@ -129,6 +150,9 @@ class ProjectFileService
         return $this->fileService->download($file->getFileName(), $file->getStoragePath());
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getFileUrl(int $fileId): ?string
     {
         $file = $this->getFile($fileId);
@@ -140,6 +164,9 @@ class ProjectFileService
         return $this->fileService->getUrl($file->getFileName(), $file->getStoragePath());
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     private function getStorageDir(string $entityType): string
     {
         if ($entityType === 'project') {
@@ -162,7 +189,9 @@ class ProjectFileService
      * @param FileDTO $file
      * @param string  $storagePath
      * @return int Inserted file id
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+ */
     private function saveFileRecord(FileDTO $file, string $storagePath): int
     {
         $sql = "INSERT INTO " . self::TABLE_PREFIX . "files (

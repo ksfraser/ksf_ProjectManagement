@@ -21,7 +21,9 @@ use PHPUnit\Framework\TestCase;
  * @package Ksfraser\ProjectManagement
  * @since   1.0.0
  *
- * @BABOK Related: BR-007, FR-PM-007-002, FR-CAL-007-002
+ * @BABOK Related: N/A — no requirement defined in this repo. Replaces the previous
+ *   `@BABOK BR-007, FR-PM-007-002, FR-CAL-007-002`, all defined only in
+ *   ksf_FA_ProjectManagement/ProjectDcs.
  */
 final class EventCloseTaskServiceTest extends TestCase
 {
@@ -31,6 +33,9 @@ final class EventCloseTaskServiceTest extends TestCase
     /** @var EventCloseTaskService */
     private $service;
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+     */
     protected function setUp(): void
     {
         $this->db = new FakeDbConnection();
@@ -40,7 +45,9 @@ final class EventCloseTaskServiceTest extends TestCase
     /**
      * BON: window correctly equals closed_at - started_at recorded hours
      * (09:00 -> 13:00 = 4.0h), snapshotted onto the progress row (INSERT).
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+ */
     public function testTaskCloseSnapshotsWorkedWindow(): void
     {
         $this->db->queueSelects([
@@ -71,7 +78,9 @@ final class EventCloseTaskServiceTest extends TestCase
     /**
      * ARI: a repeat broadcast for the same, already-closed task is a NO-OP —
      * nothing re-written, window stays closed.
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+ */
     public function testAlreadyClosedTaskIsNoOp(): void
     {
         $this->db->queueSelects([
@@ -92,7 +101,9 @@ final class EventCloseTaskServiceTest extends TestCase
 
     /**
      * An existing non-closed progress row is marked closed with the window.
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+ */
     public function testExistingTaskWindowIsSealed(): void
     {
         $this->db->queueSelects([
@@ -120,7 +131,9 @@ final class EventCloseTaskServiceTest extends TestCase
 
     /**
      * AZZ: DTO task_id unknown to this module -> no-op, no error.
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+ */
     public function testUnknownTaskNoOp(): void
     {
         $this->db->queueSelects([[]]);
@@ -134,7 +147,9 @@ final class EventCloseTaskServiceTest extends TestCase
 
     /**
      * No task_id -> no-op (subscriber must not guess the task).
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+ */
     public function testNoTaskIdNoOp(): void
     {
         $result = $this->service->onEventClosed(['event_id' => 7]);
@@ -146,7 +161,9 @@ final class EventCloseTaskServiceTest extends TestCase
 
     /**
      * Object-form DTO (toArray) is accepted without a Calendar class dependency.
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+ */
     public function testObjectDtoIsAccepted(): void
     {
         $this->db->queueSelects([
@@ -160,7 +177,9 @@ final class EventCloseTaskServiceTest extends TestCase
 
             /**
              * @param array<string,mixed> $payload
-             */
+              *
+ * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+ */
             public function __construct(array $payload)
             {
                 $this->payload = $payload;
@@ -168,7 +187,9 @@ final class EventCloseTaskServiceTest extends TestCase
 
             /**
              * @return array<string,mixed>
-             */
+              *
+ * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+ */
             public function toArray(): array
             {
                 return $this->payload;
@@ -190,7 +211,9 @@ final class EventCloseTaskServiceTest extends TestCase
     /**
      * @param array<int,array{sql:string,params:array}> $writes
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for the event-close subscriber
+ */
     private function assertNoWriteStatements(array $writes): void
     {
         foreach ($writes as $write) {

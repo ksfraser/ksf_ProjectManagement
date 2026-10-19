@@ -7,7 +7,9 @@ namespace Ksfraser\ProjectManagement\Entity;
 /**
  * Link between an imported FA sales order and a project.
  *
- * @BABOK Related: FR-PM-009 - Sales order to project linkage
+ * @BABOK Related: N/A — no requirement defined in this repo for sales-order-to-
+ *   project linkage. Replaces the previous `@BABOK FR-PM-009`, which matches no
+ *   ProjectDcs document in this repo or in the FA wrapper.
  * @since 1.0.0
  */
 class ProjectSalesOrder
@@ -27,6 +29,9 @@ class ProjectSalesOrder
     /** @var string */
     private $linkedAt;
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; see the class docblock
+     */
     public function __construct(array $data)
     {
         $this->id = (int)($data['id'] ?? 0);
@@ -38,14 +43,38 @@ class ProjectSalesOrder
         $this->linkedAt = (string)($data['linked_at'] ?? '');
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; see the class docblock
+     */
     public function getId(): int { return $this->id; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; see the class docblock
+     */
     public function getProjectId(): string { return $this->projectId; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; see the class docblock
+     */
     public function getFaOrderNo(): int { return $this->faOrderNo; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; see the class docblock
+     */
     public function getFaTransType(): int { return $this->faTransType; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; see the class docblock
+     */
     public function getSource(): string { return $this->source; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; see the class docblock
+     */
     public function getSourceOrderId(): ?string { return $this->sourceOrderId; }
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; see the class docblock
+     */
     public function getLinkedAt(): string { return $this->linkedAt; }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; see the class docblock
+     */
     public function toArray(): array
     {
         return [

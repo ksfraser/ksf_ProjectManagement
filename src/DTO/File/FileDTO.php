@@ -12,6 +12,9 @@ namespace Ksfraser\ProjectManagement\DTO\File;
 use DateTime;
 use DateTimeInterface;
 
+/**
+ * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+ */
 class FileDTO
 {
     /** @var int|null */
@@ -41,6 +44,9 @@ class FileDTO
     /** @var bool */
     private $inactive;
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function __construct(
         string $entityType,
         string $entityId,
@@ -71,76 +77,121 @@ class FileDTO
         $this->inactive = $inactive;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getEntityType(): string
     {
         return $this->entityType;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getEntityId(): string
     {
         return $this->entityId;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getFileName(): string
     {
         return $this->fileName;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getOriginalName(): string
     {
         return $this->originalName;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getMimeType(): string
     {
         return $this->mimeType;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getSize(): int
     {
         return $this->size;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getStorageType(): string
     {
         return $this->storageType;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getStoragePath(): string
     {
         return $this->storagePath;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getUploadedBy(): ?string
     {
         return $this->uploadedBy;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getUploadedAt(): ?DateTime
     {
         return $this->uploadedAt;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function isInactive(): bool
     {
         return $this->inactive;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getFullStoragePath(): string
     {
         return rtrim($this->storagePath, '/') . '/' . $this->fileName;
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function getFormattedSize(): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -155,6 +206,9 @@ class FileDTO
         return round($size, 2) . ' ' . $units[$i];
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function isImage(): bool
     {
         return in_array($this->mimeType, [
@@ -166,6 +220,9 @@ class FileDTO
         ], true);
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function isDocument(): bool
     {
         return in_array($this->mimeType, [
@@ -179,6 +236,9 @@ class FileDTO
         ], true);
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public function toArray(): array
     {
         return [
@@ -198,6 +258,9 @@ class FileDTO
         ];
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public static function fromArray(array $data): self
     {
         $uploadedAt = null;
@@ -224,6 +287,9 @@ class FileDTO
         );
     }
 
+    /**
+     * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+     */
     public static function fromUploadedFile(
         string $entityType,
         string $entityId,

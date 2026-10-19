@@ -14,6 +14,9 @@ use ksfraser\CommonDb\Contract\DbConnectionInterface;
 use Ksfraser\ProjectManagement\Entity\Task;
 use Ksfraser\ProjectManagement\Repository\TaskRepositoryInterface;
 
+/**
+ * @BABOK Related: FR-PM-002 — persistence for tasks
+ */
 class DatabaseTaskRepository implements TaskRepositoryInterface
 {
     private const TABLE = 'fa_pm_tasks';
@@ -21,12 +24,18 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
     /** @var DbConnectionInterface */
     private $db;
 
+    /**
+     * @BABOK Related: FR-PM-002 — DI of the transport-agnostic DbConnectionInterface
+     */
     public function __construct(
         DbConnectionInterface $db
     ) {
         $this->db = $db;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — read a task by id
+     */
     public function find(string $taskId): ?Task
     {
         $sql = "SELECT * FROM " . self::TABLE . " WHERE task_id = ?";
@@ -39,6 +48,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         return $this->hydrate($row);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — the tasks of a project
+     */
     public function findByProject(string $projectId): array
     {
         $sql = "SELECT * FROM " . self::TABLE . " WHERE project_id = ? ORDER BY parent_task_id, task_id";
@@ -47,6 +59,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — hierarchical parent-child relationships (BR-TASK-001)
+     */
     public function findByParent(string $parentTaskId): array
     {
         $sql = "SELECT * FROM " . self::TABLE . " WHERE parent_task_id = ? ORDER BY task_id";
@@ -55,6 +70,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — persist a task
+     */
     public function save(Task $task): void
     {
         $exists = $this->find($task->getTaskId()) !== null;
@@ -66,12 +84,18 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         }
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — delete a task
+     */
     public function delete(string $taskId): void
     {
         $sql = "DELETE FROM " . self::TABLE . " WHERE task_id = ?";
         $this->db->executeUpdate($sql, [$taskId]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task assignment lookup (BR-TASK-002)
+     */
     public function findByAssignee(string $employeeId): array
     {
         $sql = "SELECT * FROM " . self::TABLE . " WHERE assigned_to = ? ORDER BY task_id";
@@ -80,6 +104,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-005 — tasks past their due date
+     */
     public function findOverdue(): array
     {
         $sql = "SELECT * FROM " . self::TABLE . "
@@ -92,6 +119,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — status filtering
+     */
     public function findByStatus(string $status): array
     {
         $sql = "SELECT * FROM " . self::TABLE . " WHERE status = ? ORDER BY task_id";
@@ -100,6 +130,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         return array_map(fn($row) => $this->hydrate($row), $rows);
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 — denominator of project progress
+     */
     public function countByProject(string $projectId): int
     {
         $sql = "SELECT COUNT(*) as cnt FROM " . self::TABLE . " WHERE project_id = ?";
@@ -108,6 +141,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         return (int) ($result['cnt'] ?? 0);
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 — numerator of project progress
+     */
     public function countCompletedByProject(string $projectId): int
     {
         $sql = "SELECT COUNT(*) as cnt FROM " . self::TABLE . "
@@ -117,6 +153,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         return (int) ($result['cnt'] ?? 0);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — insert path of save(); no requirement of its own
+     */
     private function insert(Task $task): void
     {
         $sql = "INSERT INTO " . self::TABLE . " (
@@ -142,6 +181,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — update path of save(); no requirement of its own
+     */
     private function update(Task $task): void
     {
         $sql = "UPDATE " . self::TABLE . " SET
@@ -174,6 +216,9 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — row-to-entity mapping; no requirement of its own
+     */
     private function hydrate(array $row): Task
     {
         $task = new Task(

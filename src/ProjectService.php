@@ -29,6 +29,9 @@ use Ksfraser\ProjectManagement\Exception\ValidationException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @BABOK Related: FR-PM-001, FR-PM-002, FR-PM-003, FR-PM-004, FR-PM-005 — the aggregate service implementing project CRUD, tasks, allocation, progress and overdue detection
+ */
 class ProjectService implements ProjectServiceInterface
 {
     private const TABLE_PROJECTS = 'fa_pm_projects';
@@ -44,6 +47,9 @@ class ProjectService implements ProjectServiceInterface
     /** @var EmployeeServiceInterface */
     private $employeeService;
 
+    /**
+     * @BABOK Related: FR-PM-001 — DI of the transport-agnostic collaborators (no FA coupling)
+     */
     public function __construct(
         DbConnectionInterface $db,
         EventDispatcherInterface $events,
@@ -56,6 +62,9 @@ class ProjectService implements ProjectServiceInterface
         $this->employeeService = $employeeService;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — create a project and emit project.created
+     */
     public function createProject(array $projectData): Project
     {
         $this->logger->info('Creating new project', ['name' => $projectData['name'] ?? '']);
@@ -95,6 +104,9 @@ class ProjectService implements ProjectServiceInterface
         return $project;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — read a project
+     */
     public function getProject(string $projectId): Project
     {
         $sql = "SELECT * FROM " . self::TABLE_PROJECTS . " WHERE project_id = ?";
@@ -107,6 +119,9 @@ class ProjectService implements ProjectServiceInterface
         return $this->hydrateProject($result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — edit a project and emit project.updated
+     */
     public function updateProject(string $projectId, array $projectData): Project
     {
         $project = $this->getProject($projectId);
@@ -156,6 +171,9 @@ class ProjectService implements ProjectServiceInterface
         return $project;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — delete a project
+     */
     public function deleteProject(string $projectId): void
     {
         $this->getProject($projectId);
@@ -164,6 +182,9 @@ class ProjectService implements ProjectServiceInterface
         $this->logger->info('Project deleted', ['projectId' => $projectId]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — create a task and emit task.created
+     */
     public function createTask(array $taskData): Task
     {
         $this->logger->info('Creating project task', [
@@ -208,6 +229,9 @@ class ProjectService implements ProjectServiceInterface
         return $task;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — read a task
+     */
     public function getTask(string $taskId): Task
     {
         $sql = "SELECT * FROM " . self::TABLE_TASKS . " WHERE task_id = ?";
@@ -220,6 +244,9 @@ class ProjectService implements ProjectServiceInterface
         return $this->hydrateTask($result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — the tasks of a project
+     */
     public function getProjectTasks(string $projectId): array
     {
         $sql = "SELECT * FROM " . self::TABLE_TASKS . " WHERE project_id = ? ORDER BY parent_task_id, task_id";
@@ -232,6 +259,9 @@ class ProjectService implements ProjectServiceInterface
         return $tasks;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — edit a task
+     */
     public function updateTask(string $taskId, array $taskData): Task
     {
         $task = $this->getTask($taskId);
@@ -275,6 +305,9 @@ class ProjectService implements ProjectServiceInterface
         return $task;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — delete a task
+     */
     public function deleteTask(string $taskId): void
     {
         $this->getTask($taskId);
@@ -283,6 +316,9 @@ class ProjectService implements ProjectServiceInterface
         $this->logger->info('Task deleted', ['taskId' => $taskId]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 — set progress 0-100% and emit task.progress_updated
+     */
     public function updateTaskProgress(string $taskId, float $progress, string $status): void
     {
         $this->logger->info('Updating task progress', [
@@ -303,6 +339,9 @@ class ProjectService implements ProjectServiceInterface
         $this->events->dispatch(new TaskProgressUpdatedEvent($task, $previousProgress, $progress));
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocate an employee and emit employee.assigned_to_project
+     */
     public function assignEmployeeToProject(string $projectId, string $employeeId, array $assignmentData = []): void
     {
         $this->logger->info('Assigning employee to project', ['projectId' => $projectId, 'employeeId' => $employeeId]);
@@ -330,6 +369,9 @@ class ProjectService implements ProjectServiceInterface
         $this->events->dispatch(new EmployeeAssignedToProjectEvent($assignment));
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — end an allocation
+     */
     public function removeEmployeeFromProject(string $projectId, string $employeeId): void
     {
         $sql = "DELETE FROM " . self::TABLE_ASSIGNMENTS . " WHERE project_id = ? AND employee_id = ?";
@@ -337,6 +379,9 @@ class ProjectService implements ProjectServiceInterface
         $this->logger->info('Employee removed from project', ['projectId' => $projectId, 'employeeId' => $employeeId]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — the allocated team
+     */
     public function getProjectTeam(string $projectId): array
     {
         $sql = "SELECT pa.*, e.first_name, e.last_name, e.email, e.job_title
@@ -349,6 +394,9 @@ class ProjectService implements ProjectServiceInterface
         return $this->db->fetchAll($sql, [$projectId]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — input guard for project create/update
+     */
     private function validateProjectData(array $data): void
     {
         $errors = [];
@@ -380,6 +428,9 @@ class ProjectService implements ProjectServiceInterface
         }
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — input guard for task create/update
+     */
     private function validateTaskData(array $data): void
     {
         $errors = [];
@@ -416,6 +467,9 @@ class ProjectService implements ProjectServiceInterface
         }
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — guard against duplicate allocation
+     */
     private function isEmployeeAssignedToProject(string $employeeId, string $projectId): bool
     {
         $sql = "SELECT COUNT(*) as count FROM " . self::TABLE_ASSIGNMENTS . "
@@ -426,6 +480,9 @@ class ProjectService implements ProjectServiceInterface
         return ($result['count'] ?? 0) > 0;
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — id generation for a new project
+     */
     private function getNextProjectId(): string
     {
         $sql = "SELECT MAX(CAST(project_id AS UNSIGNED)) + 1 as next_id FROM " . self::TABLE_PROJECTS;
@@ -433,6 +490,9 @@ class ProjectService implements ProjectServiceInterface
         return (string) ($result['next_id'] ?? 1);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — id generation for a new task
+     */
     private function getNextTaskId(): string
     {
         $sql = "SELECT MAX(CAST(task_id AS UNSIGNED)) + 1 as next_id FROM " . self::TABLE_TASKS;
@@ -440,6 +500,9 @@ class ProjectService implements ProjectServiceInterface
         return (string) ($result['next_id'] ?? 1);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — persistence hand-off; no requirement of its own
+     */
     private function saveProject(Project $project): void
     {
         $sql = "INSERT INTO " . self::TABLE_PROJECTS . " (
@@ -461,6 +524,9 @@ class ProjectService implements ProjectServiceInterface
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — persistence hand-off; no requirement of its own
+     */
     private function saveTask(Task $task): void
     {
         $sql = "INSERT INTO " . self::TABLE_TASKS . " (
@@ -486,6 +552,9 @@ class ProjectService implements ProjectServiceInterface
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — persistence hand-off; no requirement of its own
+     */
     private function saveProjectAssignment(ProjectAssignment $assignment): void
     {
         $sql = "INSERT INTO " . self::TABLE_ASSIGNMENTS . " (
@@ -502,6 +571,9 @@ class ProjectService implements ProjectServiceInterface
         ]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — row-to-entity mapping; no requirement of its own
+     */
     private function hydrateProject(array $row): Project
     {
         $project = new Project(
@@ -523,6 +595,9 @@ class ProjectService implements ProjectServiceInterface
         return $project;
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — row-to-entity mapping; no requirement of its own
+     */
     private function hydrateTask(array $row): Task
     {
         $task = new Task(

@@ -26,6 +26,8 @@ use PHPUnit\Framework\TestCase;
  * @since   1.0.0
  *
  * @UML Note: AGENTS.md §ksf_common_db (interface + DI'd transport)
+  *
+ * @BABOK Related: N/A — architecture guard: enforces the no-FA-coupling rule the ARCH-PM-006 package boundary requires
  */
 final class NoFaCouplingTest extends TestCase
 {
@@ -34,7 +36,9 @@ final class NoFaCouplingTest extends TestCase
      * coupling; a mention in a docblock is documentation.
      *
      * @return array<string,string>
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     private function faSymbols(): array
     {
         return [
@@ -51,7 +55,9 @@ final class NoFaCouplingTest extends TestCase
      * global, hard-depend on an FA namespace, or construct an FA transport.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     public function testShippedSourceContainsNoFaRuntime(): void
     {
         $violations = [];
@@ -81,7 +87,9 @@ final class NoFaCouplingTest extends TestCase
      * that is the shared contract this package codes against.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     public function testShippedSourceImportsNoFrontAccountingNamespace(): void
     {
         $violations = [];
@@ -113,7 +121,9 @@ final class NoFaCouplingTest extends TestCase
      * hooks.php in here would be a landmine, not a convenience.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     public function testPackageShipsNoFrontAccountingExtensionSurface(): void
     {
         $root = $this->moduleDir();
@@ -131,7 +141,9 @@ final class NoFaCouplingTest extends TestCase
      * transport. `FaDbAdapter` may not even be named in src/.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     public function testNoFaAdapterIsNamedInRuntimeSource(): void
     {
         foreach ($this->shippedSources() as $path) {
@@ -156,7 +168,9 @@ final class NoFaCouplingTest extends TestCase
      * exist" until the layout was corrected.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     public function testEverySourceClassIsPsr4Addressable(): void
     {
         $violations = [];
@@ -182,7 +196,9 @@ final class NoFaCouplingTest extends TestCase
 
     /**
      * @return string[]
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     private function shippedSources(): array
     {
         $found    = [];
@@ -200,11 +216,17 @@ final class NoFaCouplingTest extends TestCase
         return $found;
     }
 
+    /**
+     * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+     */
     private function moduleDir(): string
     {
         return dirname(__DIR__, 3);
     }
 
+    /**
+     * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+     */
     private function short(string $path): string
     {
         return ltrim(str_replace($this->moduleDir(), '', $path), '/');
@@ -213,9 +235,14 @@ final class NoFaCouplingTest extends TestCase
     /**
      * Comments and string literals blanked out, preserving byte offsets so line
      * numbers reported by the scanners stay accurate.
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     private function codeOnly(string $source): string
     {
+        /**
+         * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+         */
         $blank = static function (string $text): string {
             return preg_replace('/[^\n]/', ' ', $text);
         };

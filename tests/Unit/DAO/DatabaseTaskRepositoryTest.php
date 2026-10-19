@@ -15,6 +15,9 @@ use Ksfraser\ProjectManagement\DAO\DatabaseTaskRepository;
 use Ksfraser\ProjectManagement\Entity\Task;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @BABOK Related: FR-PM-002, FR-PM-004, FR-PM-005 — tests the task persistence adapter
+ */
 class DatabaseTaskRepositoryTest extends TestCase
 {
     /** @var DbConnectionInterface */
@@ -22,12 +25,18 @@ class DatabaseTaskRepositoryTest extends TestCase
     /** @var DatabaseTaskRepository */
     private $repository;
 
+    /**
+     * @BABOK Related: FR-PM-002 — task persistence
+     */
     protected function setUp(): void
     {
         $this->db = $this->createMock(DbConnectionInterface::class);
         $this->repository = new DatabaseTaskRepository($this->db);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task persistence
+     */
     public function testFindReturnsTaskWhenFound(): void
     {
         $this->db->method('fetchAssoc')->willReturn([
@@ -54,6 +63,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->assertSame(50.0, $result->getProgress());
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task persistence
+     */
     public function testFindReturnsNullWhenNotFound(): void
     {
         $this->db->method('fetchAssoc')->willReturn(null);
@@ -63,6 +75,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->assertNull($result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task persistence
+     */
     public function testFindByProjectReturnsTasksForProject(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -93,6 +108,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->assertCount(2, $result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — parent-child hierarchy (BR-TASK-001)
+     */
     public function testFindByParentReturnsChildTasks(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -114,6 +132,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->assertSame('1', $result[0]->getParentTaskId());
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task assignment (BR-TASK-002)
+     */
     public function testFindByAssigneeReturnsTasksForEmployee(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -135,6 +156,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->assertSame('emp1', $result[0]->getAssignedTo());
     }
 
+    /**
+     * @BABOK Related: FR-PM-005 — overdue detection
+     */
     public function testFindOverdueReturnsOverdueTasks(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -158,6 +182,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->assertTrue($result[0]->isOverdue());
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task persistence
+     */
     public function testFindByStatusReturnsFilteredTasks(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -180,6 +207,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->assertSame('Completed', $result[0]->getStatus());
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 — progress denominator
+     */
     public function testCountByProjectReturnsCount(): void
     {
         $this->db->method('fetchAssoc')->willReturn(['cnt' => '5']);
@@ -189,6 +219,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->assertSame(5, $result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 — progress numerator
+     */
     public function testCountCompletedByProjectReturnsCount(): void
     {
         $this->db->method('fetchAssoc')->willReturn(['cnt' => '3']);
@@ -198,6 +231,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->assertSame(3, $result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task persistence
+     */
     public function testSaveInsertsNewTask(): void
     {
         $this->db->method('fetchAssoc')->willReturn(null);
@@ -208,6 +244,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->repository->save($task);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task persistence
+     */
     public function testSaveUpdatesExistingTask(): void
     {
         $this->db->method('fetchAssoc')->willReturn([
@@ -227,6 +266,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->repository->save($task);
     }
 
+    /**
+     * @BABOK Related: FR-PM-002 — task persistence
+     */
     public function testDeleteExecutesDeleteQuery(): void
     {
         $this->db->expects($this->once())->method('executeUpdate');
@@ -234,6 +276,9 @@ class DatabaseTaskRepositoryTest extends TestCase
         $this->repository->delete('1');
     }
 
+    /**
+     * @BABOK Related: FR-PM-005 — null dates must not be read as overdue
+     */
     public function testHydrationWithNullDates(): void
     {
         $this->db->method('fetchAssoc')->willReturn([

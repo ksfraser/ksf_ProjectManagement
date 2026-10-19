@@ -9,6 +9,8 @@ namespace Ksfraser\ProjectManagement\Dto;
  *
  * @package Ksfraser\ProjectManagement
  * @since   1.0.0
+  *
+ * @BABOK Related: FR-PM-006-001 — result envelope of the schedule computation
  */
 final class ScheduleDto
 {
@@ -27,7 +29,9 @@ final class ScheduleDto
      * @param TaskDto[] $tasks
      * @param string[]  $cycle
      * @param string[]  $critical
-     */
+      *
+ * @BABOK Related: FR-PM-006-001 — carries ES/EF/LS/LF/slack/critical per task, the ok flag and the cycle path
+ */
     public function __construct(bool $ok, array $tasks, array $critical, int $projectDuration, array $cycle = [])
     {
         $this->ok = $ok;

@@ -13,9 +13,14 @@ use PHPUnit\Framework\TestCase;
  *
  * @package Ksfraser\ProjectManagement
  * @since   1.0.0
+  *
+ * @BABOK Related: FR-PM-006-001 — tests the CPM-to-Gantt projection
  */
 final class GanttTimelineBuilderTest extends TestCase
 {
+    /**
+     * @BABOK Related: FR-PM-006-001 — Gantt projection of the computed schedule
+     */
     public function testBuildFromEngineResult(): void
     {
         $engine = new CpmEngine();

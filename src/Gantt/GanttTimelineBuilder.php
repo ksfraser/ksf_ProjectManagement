@@ -24,6 +24,8 @@ use Ksfraser\ProjectManagement\Scheduling\CpmEngine;
  *
  * @UML ProjectDcs / 003-Scheduling — ARCH-PM-006 cluster: engine → Gantt
  *      builder → transport adapter (FA renderers / PDF / tests).
+  *
+ * @BABOK Related: FR-PM-006-001 — reduces a validated CPM result set to presentation-agnostic Gantt rows
  */
 class GanttTimelineBuilder
 {
@@ -37,7 +39,9 @@ class GanttTimelineBuilder
      * @return GanttRowDto[]
      *
      * @see \Ksfraser\ProjectManagement\Scheduling\CpmEngine::run()
-     */
+      *
+ * @BABOK Related: FR-PM-006-001 — Gantt projection of the computed schedule
+ */
     public function build(array $cpm): array
     {
         $rows = [];

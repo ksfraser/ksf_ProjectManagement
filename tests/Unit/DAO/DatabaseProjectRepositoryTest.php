@@ -15,6 +15,9 @@ use Ksfraser\ProjectManagement\DAO\DatabaseProjectRepository;
 use Ksfraser\ProjectManagement\Entity\Project;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @BABOK Related: FR-PM-001, FR-PM-005 — tests the project persistence adapter
+ */
 class DatabaseProjectRepositoryTest extends TestCase
 {
     /** @var DbConnectionInterface */
@@ -22,12 +25,18 @@ class DatabaseProjectRepositoryTest extends TestCase
     /** @var DatabaseProjectRepository */
     private $repository;
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     protected function setUp(): void
     {
         $this->db = $this->createMock(DbConnectionInterface::class);
         $this->repository = new DatabaseProjectRepository($this->db);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testFindReturnsProjectWhenFound(): void
     {
         $this->db->method('fetchAssoc')->willReturn([
@@ -51,6 +60,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertSame(50000.0, $result->getBudget());
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testFindReturnsNullWhenNotFound(): void
     {
         $this->db->method('fetchAssoc')->willReturn(null);
@@ -60,6 +72,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertNull($result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testFindAllReturnsArrayOfProjects(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -90,6 +105,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertInstanceOf(Project::class, $result[1]);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testFindByStatusReturnsFilteredProjects(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -110,6 +128,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertSame('Active', $result[0]->getStatus());
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testFindByCustomerReturnsCustomerProjects(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -131,6 +152,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertSame('CUST001', $result[0]->getCustomerId());
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testFindByManagerReturnsManagerProjects(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -151,6 +175,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertSame('mgr1', $result[0]->getProjectManager());
     }
 
+    /**
+     * @BABOK Related: FR-PM-005 — overdue detection
+     */
     public function testFindOverdueReturnsOverdueProjects(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -172,6 +199,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertTrue($result[0]->isOverdue());
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testFindActiveReturnsActiveProjects(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -192,6 +222,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertCount(1, $result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testCountReturnsTotalCount(): void
     {
         $this->db->method('fetchAssoc')->willReturn(['cnt' => '10']);
@@ -201,6 +234,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertSame(10, $result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testCountByStatusReturnsFilteredCount(): void
     {
         $this->db->method('fetchAssoc')->willReturn(['cnt' => '5']);
@@ -210,6 +246,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->assertSame(5, $result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testSaveInsertsNewProject(): void
     {
         $this->db->method('fetchAssoc')->willReturn(null);
@@ -220,6 +259,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->repository->save($project);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testSaveUpdatesExistingProject(): void
     {
         $this->db->method('fetchAssoc')->willReturn([
@@ -238,6 +280,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->repository->save($project);
     }
 
+    /**
+     * @BABOK Related: FR-PM-001 — project persistence
+     */
     public function testDeleteExecutesDeleteQuery(): void
     {
         $this->db->expects($this->once())->method('executeUpdate');
@@ -245,6 +290,9 @@ class DatabaseProjectRepositoryTest extends TestCase
         $this->repository->delete('1');
     }
 
+    /**
+     * @BABOK Related: FR-PM-005 — a null end date must not be read as overdue
+     */
     public function testHydrationWithNullEndDate(): void
     {
         $this->db->method('fetchAssoc')->willReturn([

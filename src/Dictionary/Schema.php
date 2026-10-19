@@ -36,7 +36,9 @@ use ksfraser\CommonDb\Dictionary\TableDefinition;
  * @since   1.0.0
  *
  * @UML Note: AGENTS.md §ksf_common_db (data-dictionary + query-builder)
- * @BABOK Related: BR-012 (Project Management)
+ * @BABOK Related: FR-PM-001, FR-PM-002, FR-PM-003 — the data dictionary for the tables
+ *   those three requirements persist. Replaces the previous `@BABOK BR-012`, which
+ *   matches no ProjectDcs document in this repo or in the FA wrapper.
  */
 class Schema
 {
@@ -57,7 +59,9 @@ class Schema
      * Data dictionary definition for the projects table.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: FR-PM-001 — project table definition
+ */
     public static function projects(): TableDefinition
     {
         return (new TableDefinition(self::T_PROJECTS, 'project_id'))
@@ -84,7 +88,9 @@ class Schema
      * Data dictionary definition for the tasks table.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: FR-PM-002 — task table definition
+ */
     public static function tasks(): TableDefinition
     {
         return (new TableDefinition(self::T_TASKS, 'task_id'))
@@ -129,7 +135,9 @@ class Schema
      * ES/EF/LS/LF/slack/critical back onto the tasks() dictionary.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: FR-PM-002 — task dependency table (BR-TASK-005)
+ */
     public static function taskDependencies(): TableDefinition
     {
         return (new TableDefinition(self::T_TASK_DEPENDENCIES, 'dependency_id'))
@@ -148,7 +156,9 @@ class Schema
      * Data dictionary definition for the team-assignment table.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: FR-PM-003 — allocation table
+ */
     public static function assignments(): TableDefinition
     {
         return (new TableDefinition(self::T_ASSIGNMENTS, 'project_id'))
@@ -167,7 +177,9 @@ class Schema
      * Data dictionary definition for the project-types reference table.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for project-type reference data
+ */
     public static function projectTypes(): TableDefinition
     {
         return (new TableDefinition(self::T_PROJECT_TYPES, 'id'))
@@ -183,7 +195,9 @@ class Schema
      * Data dictionary definition for the activity-log table.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for an activity log
+ */
     public static function activityLog(): TableDefinition
     {
         return (new TableDefinition(self::T_ACTIVITY, 'id'))
@@ -207,7 +221,9 @@ class Schema
      * Data dictionary definition for the file-attachment table.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for the attachment/storage feature; FR-PROJECT-004 lives in ksf_FA_ProjectManagement/ProjectDcs and this package only carries the transport-agnostic contract for it
+ */
     public static function files(): TableDefinition
     {
         return (new TableDefinition(self::T_FILES, 'id'))
@@ -232,7 +248,9 @@ class Schema
      * Data dictionary definition for OpenProject-style task progress.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: FR-PM-004 — persisted progress rows
+ */
     public static function taskProgress(): TableDefinition
     {
         return (new TableDefinition(self::T_PROGRESS, 'progress_id'))
@@ -252,7 +270,9 @@ class Schema
      * Data dictionary definition for project-to-FA-order links.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for sales-order linkage; FR-PM-009 is cited in code but matches no document in either repo
+ */
     public static function projectSalesOrders(): TableDefinition
     {
         return (new TableDefinition(self::T_SALES_ORDERS, 'id'))
@@ -272,7 +292,9 @@ class Schema
      * Data dictionary definition for project revenue rows.
      *
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: N/A — no requirement defined in this repo for revenue recognition; FR-PM-010 is cited in code but matches no document in either repo
+ */
     public static function projectRevenue(): TableDefinition
     {
         return (new TableDefinition(self::T_REVENUE, 'revenue_id'))
@@ -295,7 +317,9 @@ class Schema
      * All dictionary CREATE TABLE statements, keyed by logical table name.
      *
      * @return array<string, string>
-     */
+      *
+ * @BABOK Related: N/A — standalone/CLI DDL convenience; not a requirement, it is how the dictionary is applied
+ */
     public static function createSqls(): array
     {
         $defs = [
@@ -324,7 +348,9 @@ class Schema
      *
      * @param string $table Logical table name (one of the T_* constants)
      * @return TableDefinition
-     */
+      *
+ * @BABOK Related: N/A — dictionary lookup helper; no requirement of its own
+ */
     public static function definitionFor(string $table): TableDefinition
     {
         $map = [

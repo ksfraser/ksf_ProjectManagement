@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Ksfraser\ProjectManagement\DTO\Assignment;
 
+/**
+ * @BABOK Related: FR-PM-003 — transfer shape for an employee-to-project allocation
+ */
 class AssignmentDTO
 {
     /** @var string */
@@ -36,6 +39,9 @@ class AssignmentDTO
     /** @var string|null */
     private $createdAt = null;
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function __construct(
         string $projectId,
         string $employeeId,
@@ -64,66 +70,105 @@ class AssignmentDTO
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getProjectId(): string
     {
         return $this->projectId;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getEmployeeId(): string
     {
         return $this->employeeId;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getRole(): string
     {
         return $this->role;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getStartDate(): string
     {
         return $this->startDate;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getEndDate(): ?string
     {
         return $this->endDate;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getAllocationPercentage(): float
     {
         return $this->allocationPercentage;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getEmployeeName(): ?string
     {
         return $this->employeeName;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getJobTitle(): ?string
     {
         return $this->jobTitle;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getDepartment(): ?string
     {
         return $this->department;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — track active/ended allocations
+     */
     public function isActive(): bool
     {
         return $this->isActive;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function getCreatedAt(): ?string
     {
         return $this->createdAt;
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 accessor; serves this FR data shape, adds no behaviour of its own
+     */
     public function toArray(): array
     {
         return [
@@ -142,6 +187,9 @@ class AssignmentDTO
         ];
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — hydrate the DTO from a row/API payload
+     */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -160,6 +208,9 @@ class AssignmentDTO
         );
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — project an entity into the DTO
+     */
     public static function fromEntity(\Ksfraser\ProjectManagement\Entity\ProjectAssignment $entity): self
     {
         $endDate = $entity->getEndDate() !== null ? $entity->getEndDate()->format('Y-m-d') : null;

@@ -15,6 +15,9 @@ use Ksfraser\ProjectManagement\DAO\DatabaseAssignmentRepository;
 use Ksfraser\ProjectManagement\Entity\ProjectAssignment;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @BABOK Related: FR-PM-003 — tests the allocation persistence adapter
+ */
 class DatabaseAssignmentRepositoryTest extends TestCase
 {
     /** @var DbConnectionInterface */
@@ -22,12 +25,18 @@ class DatabaseAssignmentRepositoryTest extends TestCase
     /** @var DatabaseAssignmentRepository */
     private $repository;
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     protected function setUp(): void
     {
         $this->db = $this->createMock(DbConnectionInterface::class);
         $this->repository = new DatabaseAssignmentRepository($this->db);
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     public function testFindByProjectAndEmployeeReturnsAssignmentWhenFound(): void
     {
         $this->db->method('fetchAssoc')->willReturn([
@@ -48,6 +57,9 @@ class DatabaseAssignmentRepositoryTest extends TestCase
         $this->assertSame(75.0, $result->getAllocationPercentage());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     public function testFindByProjectAndEmployeeReturnsNullWhenNotFound(): void
     {
         $this->db->method('fetchAssoc')->willReturn(null);
@@ -57,6 +69,9 @@ class DatabaseAssignmentRepositoryTest extends TestCase
         $this->assertNull($result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     public function testFindByProjectReturnsAllAssignments(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -83,6 +98,9 @@ class DatabaseAssignmentRepositoryTest extends TestCase
         $this->assertCount(2, $result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     public function testFindByEmployeeReturnsEmployeeAssignments(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -102,6 +120,9 @@ class DatabaseAssignmentRepositoryTest extends TestCase
         $this->assertSame('emp1', $result[0]->getEmployeeId());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     public function testFindActiveByProjectReturnsActiveAssignments(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -121,6 +142,9 @@ class DatabaseAssignmentRepositoryTest extends TestCase
         $this->assertTrue($result[0]->isActive());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     public function testFindActiveByEmployeeReturnsActiveAssignments(): void
     {
         $this->db->method('fetchAll')->willReturn([
@@ -140,6 +164,9 @@ class DatabaseAssignmentRepositoryTest extends TestCase
         $this->assertTrue($result[0]->isActive());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     public function testSaveInsertsNewAssignment(): void
     {
         $this->db->method('fetchAssoc')->willReturn(null);
@@ -150,6 +177,9 @@ class DatabaseAssignmentRepositoryTest extends TestCase
         $this->repository->save($assignment);
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     public function testSaveUpdatesExistingAssignment(): void
     {
         $this->db->method('fetchAssoc')->willReturn([
@@ -167,6 +197,9 @@ class DatabaseAssignmentRepositoryTest extends TestCase
         $this->repository->save($assignment);
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation persistence
+     */
     public function testDeleteExecutesDeleteQuery(): void
     {
         $this->db->expects($this->once())->method('executeUpdate');

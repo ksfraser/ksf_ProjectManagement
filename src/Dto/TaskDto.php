@@ -9,6 +9,8 @@ namespace Ksfraser\ProjectManagement\Dto;
  *
  * @package Ksfraser\ProjectManagement
  * @since   1.0.0
+  *
+ * @BABOK Related: FR-PM-006-001 — input row the CPM engine schedules
  */
 final class TaskDto
 {
@@ -35,6 +37,9 @@ final class TaskDto
     /** @var array<int,array<string,mixed>> */
     public $constraints;
 
+    /**
+     * @BABOK Related: FR-PM-006-001 — duration, milestone flag and constraint anchors
+     */
     public function __construct(string $id, string $name, int $duration, bool $isMilestone, array $constraints = [])
     {
         $this->id = $id;

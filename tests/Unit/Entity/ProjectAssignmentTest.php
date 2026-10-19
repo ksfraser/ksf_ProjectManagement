@@ -13,6 +13,9 @@ use DateTime;
 use Ksfraser\ProjectManagement\Entity\ProjectAssignment;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @BABOK Related: FR-PM-003 — tests the allocation value object
+ */
 class ProjectAssignmentTest extends TestCase
 {
     /** @var ProjectAssignment */
@@ -20,12 +23,18 @@ class ProjectAssignmentTest extends TestCase
     /** @var DateTime */
     private $startDate;
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     protected function setUp(): void
     {
         $this->startDate = new DateTime('2024-01-01');
         $this->assignment = new ProjectAssignment('proj1', 'emp1', 'Developer', $this->startDate, 100.0);
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testConstructorSetsRequiredFields(): void
     {
         $this->assertSame('proj1', $this->assignment->getProjectId());
@@ -35,11 +44,17 @@ class ProjectAssignmentTest extends TestCase
         $this->assertSame(100.0, $this->assignment->getAllocationPercentage());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testConstructorSetsEndDateToNull(): void
     {
         $this->assertNull($this->assignment->getEndDate());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testSetRoleReturnsSelf(): void
     {
         $result = $this->assignment->setRole('Manager');
@@ -47,6 +62,9 @@ class ProjectAssignmentTest extends TestCase
         $this->assertSame('Manager', $this->assignment->getRole());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testSetStartDateReturnsSelf(): void
     {
         $newDate = new DateTime('2024-02-01');
@@ -55,6 +73,9 @@ class ProjectAssignmentTest extends TestCase
         $this->assertSame($newDate, $this->assignment->getStartDate());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testSetEndDateReturnsSelf(): void
     {
         $endDate = new DateTime('2024-12-31');
@@ -63,6 +84,9 @@ class ProjectAssignmentTest extends TestCase
         $this->assertSame($endDate, $this->assignment->getEndDate());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testSetEndDateCanBeNull(): void
     {
         $this->assignment->setEndDate(new DateTime('2024-12-31'));
@@ -70,6 +94,9 @@ class ProjectAssignmentTest extends TestCase
         $this->assertNull($this->assignment->getEndDate());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testSetAllocationPercentageClampsToValidRange(): void
     {
         $this->assignment->setAllocationPercentage(-10.0);
@@ -82,12 +109,18 @@ class ProjectAssignmentTest extends TestCase
         $this->assertSame(75.0, $this->assignment->getAllocationPercentage());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testSetAllocationPercentageReturnsSelf(): void
     {
         $result = $this->assignment->setAllocationPercentage(50.0);
         $this->assertSame($this->assignment, $result);
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 §4.3 — active status
+     */
     public function testIsActiveReturnsTrueWhenWithinDateRange(): void
     {
         $this->assignment->setStartDate(new DateTime('-1 month'));
@@ -95,18 +128,27 @@ class ProjectAssignmentTest extends TestCase
         $this->assertTrue($this->assignment->isActive());
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 §4.3 — active status
+     */
     public function testIsActiveReturnsTrueWhenNoEndDate(): void
     {
         $this->assignment->setStartDate(new DateTime('-1 month'));
         $this->assertTrue($this->assignment->isActive());
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 §4.3 — active status
+     */
     public function testIsActiveReturnsFalseWhenStartDateInFuture(): void
     {
         $this->assignment->setStartDate(new DateTime('+1 month'));
         $this->assertFalse($this->assignment->isActive());
     }
 
+    /**
+     * @BABOK Related: FR-PM-004 §4.3 — active status
+     */
     public function testIsActiveReturnsFalseWhenEndDateInPast(): void
     {
         $this->assignment->setStartDate(new DateTime('-2 months'));
@@ -114,23 +156,35 @@ class ProjectAssignmentTest extends TestCase
         $this->assertFalse($this->assignment->isActive());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testIsEndedReturnsFalseWhenNoEndDate(): void
     {
         $this->assertFalse($this->assignment->isEnded());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testIsEndedReturnsFalseWhenEndDateInFuture(): void
     {
         $this->assignment->setEndDate(new DateTime('+1 month'));
         $this->assertFalse($this->assignment->isEnded());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testIsEndedReturnsTrueWhenEndDateInPast(): void
     {
         $this->assignment->setEndDate(new DateTime('-1 month'));
         $this->assertTrue($this->assignment->isEnded());
     }
 
+    /**
+     * @BABOK Related: FR-PM-003 — allocation behaviour
+     */
     public function testToArrayReturnsAllFields(): void
     {
         $endDate = new DateTime('2024-12-31');

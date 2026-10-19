@@ -27,12 +27,17 @@ use PHPUnit\Framework\TestCase;
  *
  * @package Ksfraser\ProjectManagement
  * @since   1.0.0
+  *
+ * @BABOK Related: N/A — architecture guard: enforces the PHP 7.3 syntax floor that ARCH-PM-006 conformance requires
  */
 final class Php74CompatibilityTest extends TestCase
 {
     /** @var string */
     private $moduleDir;
 
+    /**
+     * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+     */
     protected function setUp(): void
     {
         $this->moduleDir = dirname(__DIR__, 3);
@@ -45,7 +50,9 @@ final class Php74CompatibilityTest extends TestCase
      * so they belong to runtimeLandmines() rather than here.
      *
      * @return array<string,string>
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     private function forbiddenConstructs(): array
     {
         return [
@@ -74,7 +81,9 @@ final class Php74CompatibilityTest extends TestCase
      * as class names and every call raises a TypeError.
      *
      * @return array<string,string>
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     private function runtimeLandmines(): array
     {
         return [
@@ -87,7 +96,9 @@ final class Php74CompatibilityTest extends TestCase
      * Every non-vendor PHP source file the package ships and executes.
      *
      * @return string[]
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     private function shippedSources(): array
     {
         $found    = [];
@@ -109,7 +120,9 @@ final class Php74CompatibilityTest extends TestCase
      * Guards against the scanner silently matching nothing.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     public function testPackageShipsSourcesToScan(): void
     {
         $this->assertGreaterThan(20, count($this->shippedSources()));
@@ -117,7 +130,9 @@ final class Php74CompatibilityTest extends TestCase
 
     /**
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     public function testNoPhp8OnlySyntaxIsShipped(): void
     {
         $violations = [];
@@ -154,7 +169,9 @@ final class Php74CompatibilityTest extends TestCase
      * is the guard that stops it happening twice.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     public function testNoTypedPropertiesAreShipped(): void
     {
         $violations = [];
@@ -186,7 +203,9 @@ final class Php74CompatibilityTest extends TestCase
      * T_NS_SEPARATOR, plus `?`) occurs before the declaration's T_VARIABLE.
      *
      * @return array<int,array{line:int,text:string}>
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     private function typedPropertiesIn(string $path): array
     {
         $src    = (string) file_get_contents($path);
@@ -270,7 +289,9 @@ final class Php74CompatibilityTest extends TestCase
      * which is the failure mode that let the original 160 through.
      *
      * @return void
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     public function testTypedPropertyScannerDetectsAViolationInASyntheticSample(): void
     {
         $sample = <<<'PHP'
@@ -303,9 +324,14 @@ PHP;
      * Source with comments and string literals blanked out. Byte offsets are
      * preserved (replaced spans keep their length) so reported line numbers
      * stay accurate.
-     */
+      *
+ * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+ */
     private function codeOnly(string $source): string
     {
+        /**
+         * @BABOK Related: N/A — architecture guard; enforces a structural rule rather than a behavioural requirement
+         */
         $blank  = static function (string $text): string {
             return preg_replace('/[^\n]/', ' ', $text);
         };
