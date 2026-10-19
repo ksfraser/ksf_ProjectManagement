@@ -18,7 +18,8 @@ class DatabaseAssignmentRepository implements AssignmentRepositoryInterface
 {
     private const TABLE = 'fa_pm_assignments';
 
-    private DbConnectionInterface $db;
+    /** @var DbConnectionInterface */
+    private $db;
 
     public function __construct(
         DbConnectionInterface $db

@@ -143,6 +143,163 @@ final class Php74CompatibilityTest extends TestCase
     }
 
     /**
+     * Typed property declarations.
+     *
+     * Typed properties arrived in PHP 7.4, one version ABOVE this package's
+     * 7.3 floor, so they belong here rather than in forbiddenConstructs() (that
+     * list is about 8.x syntax, which 7.4 also rejects). They are invisible to
+     * the whole rest of the tooling: the suite runs on PHP 8.1, where they
+     * parse; `php -l` on the same host parses them; and nothing else in the
+     * build resolves for 7.3. 160 of them shipped green once already, so this
+     * is the guard that stops it happening twice.
+     *
+     * @return void
+     */
+    public function testNoTypedPropertiesAreShipped(): void
+    {
+        $violations = [];
+
+        foreach ($this->shippedSources() as $path) {
+            foreach ($this->typedPropertiesIn($path) as $hit) {
+                $short = ltrim(str_replace($this->moduleDir, '', $path), '/');
+                $violations[] = sprintf('%s:%d %s', $short, $hit['line'], $hit['text']);
+            }
+        }
+
+        $this->assertSame(
+            [],
+            $violations,
+            "Typed properties shipped; they are PHP 7.4+ and this package's floor is 7.3.\n"
+            . "Use an untyped property with a /** @var T *\/ docblock instead:\n  "
+            . implode("\n  ", $violations)
+        );
+    }
+
+    /**
+     * Every typed property declaration in a file, found by walking the token
+     * stream forward from each visibility modifier rather than by regex.
+     *
+     * The naive regex `/(public|private|protected)\s+\w+\s+\$/` cannot tell a
+     * typed property from a one-line method signature and matches both, so this
+     * reads the actual tokens: starting at a visibility modifier, a type is
+     * present only if a type-bearing token (T_STRING / T_ARRAY / T_CALLABLE /
+     * T_NS_SEPARATOR, plus `?`) occurs before the declaration's T_VARIABLE.
+     *
+     * @return array<int,array{line:int,text:string}>
+     */
+    private function typedPropertiesIn(string $path): array
+    {
+        $src    = (string) file_get_contents($path);
+        $tokens = token_get_all($src);
+        $count  = count($tokens);
+        $found  = [];
+
+        $typeTokens = [T_STRING, T_ARRAY, T_NS_SEPARATOR, T_CALLABLE];
+
+        for ($i = 0; $i < $count; $i++) {
+            if (!is_array($tokens[$i])
+                || !in_array($tokens[$i][0], [T_PUBLIC, T_PRIVATE, T_PROTECTED, T_VAR], true)
+            ) {
+                continue;
+            }
+
+            $typeStart = null;
+            $typeEnd   = null;
+            $isTyped   = false;
+            $parts     = [$tokens[$i][1]];
+            $j         = $i + 1;
+
+            while ($j < $count) {
+                $tok = $tokens[$j];
+                if (is_array($tok)) {
+                    $id = $tok[0];
+                    if ($id === T_WHITESPACE || $id === T_DOC_COMMENT || $id === T_COMMENT) {
+                        $parts[] = $tok[1];
+                        $j++;
+                        continue;
+                    }
+                    if ($id === T_STATIC || (defined('T_READONLY') && $id === T_READONLY)) {
+                        $parts[] = $tok[1];
+                        $j++;
+                        continue;
+                    }
+                    if (in_array($id, $typeTokens, true)) {
+                        $isTyped = true;
+                        $parts[] = $tok[1];
+                        $j++;
+                        continue;
+                    }
+                    break;
+                }
+                if ($tok === '?' || $tok === '|') {
+                    $isTyped = true;
+                    $parts[] = $tok;
+                    $j++;
+                    continue;
+                }
+                break;
+            }
+
+            if (!$isTyped) {
+                continue;
+            }
+
+            // A type only makes this a typed *property* if T_VARIABLE comes next.
+            // `public function foo(): string` reaches here too and must not count.
+            while ($j < $count && is_array($tokens[$j])
+                && in_array($tokens[$j][0], [T_WHITESPACE, T_DOC_COMMENT, T_COMMENT], true)
+            ) {
+                $j++;
+            }
+            if ($j >= $count || !is_array($tokens[$j]) || $tokens[$j][0] !== T_VARIABLE) {
+                continue;
+            }
+
+            $parts[] = $tokens[$j][1];
+            $found[] = [
+                'line' => $tokens[$i][2],
+                'text' => trim((string) preg_replace('/\s+/', ' ', implode('', $parts))),
+            ];
+        }
+
+        return $found;
+    }
+
+    /**
+     * Guards the typed-property scanner above against silently matching nothing,
+     * which is the failure mode that let the original 160 through.
+     *
+     * @return void
+     */
+    public function testTypedPropertyScannerDetectsAViolationInASyntheticSample(): void
+    {
+        $sample = <<<'PHP'
+<?php
+class Sample
+{
+    private string $typed;
+    private ?int $nullable = null;
+    protected array $rows = [];
+    private $plain;
+    public static $stateless;
+    public function notAProperty(): string { return ''; }
+}
+PHP;
+        $tmp = tempnam(sys_get_temp_dir(), 'php74guard') . '.php';
+        file_put_contents($tmp, $sample);
+        try {
+            $hits = $this->typedPropertiesIn($tmp);
+        } finally {
+            @unlink($tmp);
+        }
+
+        $this->assertCount(3, $hits, 'Scanner must find the 3 typed properties and ignore the rest.');
+        $this->assertStringContainsString('private string $typed', $hits[0]['text']);
+        $this->assertStringContainsString('private ?int $nullable', $hits[1]['text']);
+        $this->assertStringContainsString('protected array $rows', $hits[2]['text']);
+    }
+
+    /**
      * Source with comments and string literals blanked out. Byte offsets are
      * preserved (replaced spans keep their length) so reported line numbers
      * stay accurate.

@@ -16,19 +16,32 @@ use DateTimeInterface;
 
 class Task
 {
-    private string $taskId;
-    private string $projectId;
-    private string $parentTaskId;
-    private string $name;
-    private string $description;
-    private string $assignedTo;
-    private ?DateTime $startDate;
-    private ?DateTime $endDate;
-    private float $estimatedHours;
-    private float $actualHours;
-    private float $progress;
-    private string $priority;
-    private string $status;
+    /** @var string */
+    private $taskId;
+    /** @var string */
+    private $projectId;
+    /** @var string */
+    private $parentTaskId;
+    /** @var string */
+    private $name;
+    /** @var string */
+    private $description;
+    /** @var string */
+    private $assignedTo;
+    /** @var DateTime|null */
+    private $startDate;
+    /** @var DateTime|null */
+    private $endDate;
+    /** @var float */
+    private $estimatedHours;
+    /** @var float */
+    private $actualHours;
+    /** @var float */
+    private $progress;
+    /** @var string */
+    private $priority;
+    /** @var string */
+    private $status;
 
     public function __construct(
         string $taskId,

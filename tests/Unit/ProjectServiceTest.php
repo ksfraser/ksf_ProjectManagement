@@ -25,11 +25,16 @@ use Psr\Log\LoggerInterface;
 
 class ProjectServiceTest extends TestCase
 {
-    private DbConnectionInterface $db;
-    private EventDispatcherInterface $events;
-    private LoggerInterface $logger;
-    private EmployeeServiceInterface $employeeService;
-    private ProjectService $service;
+    /** @var DbConnectionInterface */
+    private $db;
+    /** @var EventDispatcherInterface */
+    private $events;
+    /** @var LoggerInterface */
+    private $logger;
+    /** @var EmployeeServiceInterface */
+    private $employeeService;
+    /** @var ProjectService */
+    private $service;
 
     protected function setUp(): void
     {

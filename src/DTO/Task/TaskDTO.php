@@ -11,26 +11,46 @@ namespace Ksfraser\ProjectManagement\DTO\Task;
 
 class TaskDTO
 {
-    private ?string $taskId = null;
-    private string $projectId = '';
-    private string $parentTaskId = '';
-    private string $name = '';
-    private string $description = '';
-    private string $assignedTo = '';
-    private ?string $assignedToName = null;
-    private string $startDate = '';
-    private ?string $endDate = null;
-    private float $estimatedHours = 0.0;
-    private float $actualHours = 0.0;
-    private float $progress = 0.0;
-    private string $priority = 'Medium';
-    private string $status = 'Not Started';
-    private array $subtasks = [];
-    private array $files = [];
-    private array $timeEntries = [];
-    private ?string $createdAt = null;
-    private ?string $updatedAt = null;
-    private bool $inactive = false;
+    /** @var string|null */
+    private $taskId = null;
+    /** @var string */
+    private $projectId = '';
+    /** @var string */
+    private $parentTaskId = '';
+    /** @var string */
+    private $name = '';
+    /** @var string */
+    private $description = '';
+    /** @var string */
+    private $assignedTo = '';
+    /** @var string|null */
+    private $assignedToName = null;
+    /** @var string */
+    private $startDate = '';
+    /** @var string|null */
+    private $endDate = null;
+    /** @var float */
+    private $estimatedHours = 0.0;
+    /** @var float */
+    private $actualHours = 0.0;
+    /** @var float */
+    private $progress = 0.0;
+    /** @var string */
+    private $priority = 'Medium';
+    /** @var string */
+    private $status = 'Not Started';
+    /** @var array */
+    private $subtasks = [];
+    /** @var array */
+    private $files = [];
+    /** @var array */
+    private $timeEntries = [];
+    /** @var string|null */
+    private $createdAt = null;
+    /** @var string|null */
+    private $updatedAt = null;
+    /** @var bool */
+    private $inactive = false;
 
     public function __construct(
         ?string $taskId = null,

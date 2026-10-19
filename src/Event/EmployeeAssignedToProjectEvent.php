@@ -14,8 +14,10 @@ use Psr\EventDispatcher\StoppableEventInterface;
 
 class EmployeeAssignedToProjectEvent implements StoppableEventInterface
 {
-    private bool $propagationStopped = false;
-    private ProjectAssignment $assignment;
+    /** @var bool */
+    private $propagationStopped = false;
+    /** @var ProjectAssignment */
+    private $assignment;
 
     public function __construct(
         ProjectAssignment $assignment

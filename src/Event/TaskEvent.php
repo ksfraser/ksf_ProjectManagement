@@ -14,8 +14,10 @@ use Psr\EventDispatcher\StoppableEventInterface;
 
 abstract class TaskEvent implements StoppableEventInterface
 {
-    private bool $propagationStopped = false;
-    private Task $task;
+    /** @var bool */
+    private $propagationStopped = false;
+    /** @var Task */
+    private $task;
 
     public function __construct(
         Task $task

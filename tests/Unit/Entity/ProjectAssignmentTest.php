@@ -15,8 +15,10 @@ use PHPUnit\Framework\TestCase;
 
 class ProjectAssignmentTest extends TestCase
 {
-    private ProjectAssignment $assignment;
-    private DateTime $startDate;
+    /** @var ProjectAssignment */
+    private $assignment;
+    /** @var DateTime */
+    private $startDate;
 
     protected function setUp(): void
     {

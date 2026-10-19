@@ -18,7 +18,8 @@ class DatabaseTaskRepository implements TaskRepositoryInterface
 {
     private const TABLE = 'fa_pm_tasks';
 
-    private DbConnectionInterface $db;
+    /** @var DbConnectionInterface */
+    private $db;
 
     public function __construct(
         DbConnectionInterface $db

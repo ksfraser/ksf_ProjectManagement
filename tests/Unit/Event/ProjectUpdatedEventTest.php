@@ -16,7 +16,8 @@ use PHPUnit\Framework\TestCase;
 
 class ProjectUpdatedEventTest extends TestCase
 {
-    private Project $project;
+    /** @var Project */
+    private $project;
 
     protected function setUp(): void
     {

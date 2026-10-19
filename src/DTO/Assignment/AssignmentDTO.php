@@ -11,18 +11,30 @@ namespace Ksfraser\ProjectManagement\DTO\Assignment;
 
 class AssignmentDTO
 {
-    private string $projectId;
-    private string $employeeId;
-    private string $role;
-    private string $startDate;
-    private ?string $endDate = null;
-    private float $allocationPercentage = 100.0;
-    private ?string $employeeName = null;
-    private ?string $email = null;
-    private ?string $jobTitle = null;
-    private ?string $department = null;
-    private bool $isActive = true;
-    private ?string $createdAt = null;
+    /** @var string */
+    private $projectId;
+    /** @var string */
+    private $employeeId;
+    /** @var string */
+    private $role;
+    /** @var string */
+    private $startDate;
+    /** @var string|null */
+    private $endDate = null;
+    /** @var float */
+    private $allocationPercentage = 100.0;
+    /** @var string|null */
+    private $employeeName = null;
+    /** @var string|null */
+    private $email = null;
+    /** @var string|null */
+    private $jobTitle = null;
+    /** @var string|null */
+    private $department = null;
+    /** @var bool */
+    private $isActive = true;
+    /** @var string|null */
+    private $createdAt = null;
 
     public function __construct(
         string $projectId,

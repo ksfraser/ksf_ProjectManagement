@@ -16,7 +16,8 @@ use PHPUnit\Framework\TestCase;
 
 class EmployeeAssignedToProjectEventTest extends TestCase
 {
-    private ProjectAssignment $assignment;
+    /** @var ProjectAssignment */
+    private $assignment;
 
     protected function setUp(): void
     {

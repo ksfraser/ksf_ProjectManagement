@@ -16,16 +16,26 @@ use DateTimeInterface;
 
 class Project
 {
-    private string $projectId;
-    private string $name;
-    private string $description;
-    private DateTime $startDate;
-    private ?DateTime $endDate;
-    private float $budget;
-    private string $customerId;
-    private string $projectManager;
-    private string $priority;
-    private string $status;
+    /** @var string */
+    private $projectId;
+    /** @var string */
+    private $name;
+    /** @var string */
+    private $description;
+    /** @var DateTime */
+    private $startDate;
+    /** @var DateTime|null */
+    private $endDate;
+    /** @var float */
+    private $budget;
+    /** @var string */
+    private $customerId;
+    /** @var string */
+    private $projectManager;
+    /** @var string */
+    private $priority;
+    /** @var string */
+    private $status;
 
     public function __construct(
         string $projectId,

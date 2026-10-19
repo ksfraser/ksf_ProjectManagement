@@ -35,10 +35,14 @@ class ProjectService implements ProjectServiceInterface
     private const TABLE_TASKS = 'fa_pm_tasks';
     private const TABLE_ASSIGNMENTS = 'fa_pm_assignments';
 
-    private DbConnectionInterface $db;
-    private EventDispatcherInterface $events;
-    private LoggerInterface $logger;
-    private EmployeeServiceInterface $employeeService;
+    /** @var DbConnectionInterface */
+    private $db;
+    /** @var EventDispatcherInterface */
+    private $events;
+    /** @var LoggerInterface */
+    private $logger;
+    /** @var EmployeeServiceInterface */
+    private $employeeService;
 
     public function __construct(
         DbConnectionInterface $db,

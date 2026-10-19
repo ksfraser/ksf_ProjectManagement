@@ -14,19 +14,32 @@ use DateTimeInterface;
 
 class FileDTO
 {
-    private ?int $id;
-    private string $entityType;
-    private string $entityId;
-    private string $fileName;
-    private string $originalName;
-    private string $mimeType;
-    private int $size;
-    private string $storageType;
-    private string $storagePath;
-    private ?string $uploadedBy;
-    private ?DateTime $uploadedAt;
-    private string $description;
-    private bool $inactive;
+    /** @var int|null */
+    private $id;
+    /** @var string */
+    private $entityType;
+    /** @var string */
+    private $entityId;
+    /** @var string */
+    private $fileName;
+    /** @var string */
+    private $originalName;
+    /** @var string */
+    private $mimeType;
+    /** @var int */
+    private $size;
+    /** @var string */
+    private $storageType;
+    /** @var string */
+    private $storagePath;
+    /** @var string|null */
+    private $uploadedBy;
+    /** @var DateTime|null */
+    private $uploadedAt;
+    /** @var string */
+    private $description;
+    /** @var bool */
+    private $inactive;
 
     public function __construct(
         string $entityType,

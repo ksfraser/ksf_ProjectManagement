@@ -6,11 +6,16 @@ namespace Ksfraser\ProjectManagement\Entity;
 
 class ProjectType
 {
-    private int $id;
-    private string $name;
-    private ?string $description;
-    private bool $inactive;
-    private int $sortOrder;
+    /** @var int */
+    private $id;
+    /** @var string */
+    private $name;
+    /** @var string|null */
+    private $description;
+    /** @var bool */
+    private $inactive;
+    /** @var int */
+    private $sortOrder;
 
     public function __construct(array $data)
     {

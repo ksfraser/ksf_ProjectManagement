@@ -15,7 +15,8 @@ use PHPUnit\Framework\TestCase;
 
 class TaskTest extends TestCase
 {
-    private Task $task;
+    /** @var Task */
+    private $task;
 
     protected function setUp(): void
     {

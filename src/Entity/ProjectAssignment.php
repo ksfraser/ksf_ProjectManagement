@@ -16,12 +16,18 @@ use DateTimeInterface;
 
 class ProjectAssignment
 {
-    private string $projectId;
-    private string $employeeId;
-    private string $role;
-    private DateTime $startDate;
-    private ?DateTime $endDate;
-    private float $allocationPercentage;
+    /** @var string */
+    private $projectId;
+    /** @var string */
+    private $employeeId;
+    /** @var string */
+    private $role;
+    /** @var DateTime */
+    private $startDate;
+    /** @var DateTime|null */
+    private $endDate;
+    /** @var float */
+    private $allocationPercentage;
 
     public function __construct(
         string $projectId,

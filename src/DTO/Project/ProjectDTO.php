@@ -17,24 +17,42 @@ use DateTimeInterface;
 
 class ProjectDTO
 {
-    private ?string $projectId = null;
-    private string $name = '';
-    private string $description = '';
-    private string $startDate = '';
-    private ?string $endDate = null;
-    private float $budget = 0.0;
-    private string $customerId = '';
-    private string $projectManager = '';
-    private string $priority = 'Medium';
-    private string $status = 'Planning';
-    private int $taskCount = 0;
-    private int $completedTaskCount = 0;
-    private float $overallProgress = 0.0;
-    private array $files = [];
-    private array $team = [];
-    private ?string $createdAt = null;
-    private ?string $updatedAt = null;
-    private bool $inactive = false;
+    /** @var string|null */
+    private $projectId = null;
+    /** @var string */
+    private $name = '';
+    /** @var string */
+    private $description = '';
+    /** @var string */
+    private $startDate = '';
+    /** @var string|null */
+    private $endDate = null;
+    /** @var float */
+    private $budget = 0.0;
+    /** @var string */
+    private $customerId = '';
+    /** @var string */
+    private $projectManager = '';
+    /** @var string */
+    private $priority = 'Medium';
+    /** @var string */
+    private $status = 'Planning';
+    /** @var int */
+    private $taskCount = 0;
+    /** @var int */
+    private $completedTaskCount = 0;
+    /** @var float */
+    private $overallProgress = 0.0;
+    /** @var array */
+    private $files = [];
+    /** @var array */
+    private $team = [];
+    /** @var string|null */
+    private $createdAt = null;
+    /** @var string|null */
+    private $updatedAt = null;
+    /** @var bool */
+    private $inactive = false;
 
     public function __construct(
         ?string $projectId = null,

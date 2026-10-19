@@ -17,8 +17,10 @@ use PHPUnit\Framework\TestCase;
 
 class DatabaseTaskRepositoryTest extends TestCase
 {
-    private DbConnectionInterface $db;
-    private DatabaseTaskRepository $repository;
+    /** @var DbConnectionInterface */
+    private $db;
+    /** @var DatabaseTaskRepository */
+    private $repository;
 
     protected function setUp(): void
     {

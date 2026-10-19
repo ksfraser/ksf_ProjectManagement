@@ -12,13 +12,20 @@ namespace Ksfraser\ProjectManagement\Entity;
  */
 class ProjectSalesOrder
 {
-    private int $id;
-    private string $projectId;
-    private int $faOrderNo;
-    private int $faTransType;
-    private string $source;
-    private ?string $sourceOrderId;
-    private string $linkedAt;
+    /** @var int */
+    private $id;
+    /** @var string */
+    private $projectId;
+    /** @var int */
+    private $faOrderNo;
+    /** @var int */
+    private $faTransType;
+    /** @var string */
+    private $source;
+    /** @var string|null */
+    private $sourceOrderId;
+    /** @var string */
+    private $linkedAt;
 
     public function __construct(array $data)
     {

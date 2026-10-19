@@ -20,7 +20,8 @@ class DatabaseProjectRepository implements ProjectRepositoryInterface
 {
     private const TABLE = 'fa_pm_projects';
 
-    private DbConnectionInterface $db;
+    /** @var DbConnectionInterface */
+    private $db;
 
     public function __construct(
         DbConnectionInterface $db

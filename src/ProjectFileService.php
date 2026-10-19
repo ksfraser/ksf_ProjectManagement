@@ -24,10 +24,14 @@ class ProjectFileService
     private const TABLE_FILES = 'fa_pm_files';
     private const TABLE_PREFIX = 'fa_pm_';
 
-    private DbConnectionInterface $db;
-    private FileServiceInterface $fileService;
-    private EventDispatcherInterface $events;
-    private LoggerInterface $logger;
+    /** @var DbConnectionInterface */
+    private $db;
+    /** @var FileServiceInterface */
+    private $fileService;
+    /** @var EventDispatcherInterface */
+    private $events;
+    /** @var LoggerInterface */
+    private $logger;
 
     public function __construct(
         DbConnectionInterface $db,

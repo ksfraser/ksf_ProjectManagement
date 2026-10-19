@@ -14,8 +14,10 @@ use Psr\EventDispatcher\StoppableEventInterface;
 
 abstract class ProjectEvent implements StoppableEventInterface
 {
-    private bool $propagationStopped = false;
-    private Project $project;
+    /** @var bool */
+    private $propagationStopped = false;
+    /** @var Project */
+    private $project;
 
     public function __construct(
         Project $project

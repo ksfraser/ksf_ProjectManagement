@@ -13,8 +13,10 @@ use Ksfraser\ProjectManagement\Entity\Task;
 
 class TaskProgressUpdatedEvent extends TaskEvent
 {
-    private float $previousProgress;
-    private float $newProgress;
+    /** @var float */
+    private $previousProgress;
+    /** @var float */
+    private $newProgress;
 
     public function __construct(
         Task $task,

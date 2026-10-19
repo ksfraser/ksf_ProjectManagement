@@ -14,11 +14,16 @@ use Psr\EventDispatcher\StoppableEventInterface;
 
 class ProjectFileUploadedEvent implements StoppableEventInterface
 {
-    private bool $propagationStopped = false;
-    private int $fileId;
-    private string $entityType;
-    private string $entityId;
-    private FileDTO $file;
+    /** @var bool */
+    private $propagationStopped = false;
+    /** @var int */
+    private $fileId;
+    /** @var string */
+    private $entityType;
+    /** @var string */
+    private $entityId;
+    /** @var FileDTO */
+    private $file;
 
     public function __construct(
         int $fileId,

@@ -12,16 +12,26 @@ namespace Ksfraser\ProjectManagement\Entity;
  */
 class ProjectRevenue
 {
-    private int $revenueId;
-    private string $projectId;
-    private int $faOrderNo;
-    private int $faTransType;
-    private string $source;
-    private ?string $sourceOrderId;
-    private float $orderTotal;
-    private float $revenueAmount;
-    private string $orderDate;
-    private string $createdAt;
+    /** @var int */
+    private $revenueId;
+    /** @var string */
+    private $projectId;
+    /** @var int */
+    private $faOrderNo;
+    /** @var int */
+    private $faTransType;
+    /** @var string */
+    private $source;
+    /** @var string|null */
+    private $sourceOrderId;
+    /** @var float */
+    private $orderTotal;
+    /** @var float */
+    private $revenueAmount;
+    /** @var string */
+    private $orderDate;
+    /** @var string */
+    private $createdAt;
 
     public function __construct(array $data)
     {
