@@ -21,7 +21,7 @@ use Ksfraser\ProjectManagement\Repository\ProjectRepositoryInterface;
  */
 class DatabaseProjectRepository implements ProjectRepositoryInterface
 {
-    private const TABLE = 'fa_pm_projects';
+    private const TABLE = 'ksf_projectmanagement_projects';
 
     /** @var DbConnectionInterface */
     private $db;

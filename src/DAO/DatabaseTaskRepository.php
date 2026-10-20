@@ -19,7 +19,7 @@ use Ksfraser\ProjectManagement\Repository\TaskRepositoryInterface;
  */
 class DatabaseTaskRepository implements TaskRepositoryInterface
 {
-    private const TABLE = 'fa_pm_tasks';
+    private const TABLE = 'ksf_projectmanagement_tasks';
 
     /** @var DbConnectionInterface */
     private $db;

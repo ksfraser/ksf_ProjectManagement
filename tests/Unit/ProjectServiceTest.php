@@ -171,7 +171,7 @@ class ProjectServiceTest extends TestCase
     public function testGetProjectSuccess(): void
     {
         $this->db->method('fetchAssoc')
-            ->with("SELECT * FROM fa_pm_projects WHERE project_id = ?", ['1'])
+            ->with("SELECT * FROM ksf_projectmanagement_projects WHERE project_id = ?", ['1'])
             ->willReturn([
                 'project_id' => '1',
                 'name' => 'Test Project',

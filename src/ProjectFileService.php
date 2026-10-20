@@ -24,8 +24,8 @@ use Psr\Log\LoggerInterface;
  */
 class ProjectFileService
 {
-    private const TABLE_FILES = 'fa_pm_files';
-    private const TABLE_PREFIX = 'fa_pm_';
+    private const TABLE_FILES = 'ksf_projectmanagement_files';
+    private const TABLE_PREFIX = 'ksf_projectmanagement_';
 
     /** @var DbConnectionInterface */
     private $db;

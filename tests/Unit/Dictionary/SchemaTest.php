@@ -42,7 +42,7 @@ final class SchemaTest extends TestCase
         ];
 
         foreach ($names as $name) {
-            $this->assertStringStartsWith('fa_pm_', $name);
+            $this->assertStringStartsWith('ksf_projectmanagement_', $name);
             $this->assertStringNotContainsString('0_', $name);
         }
     }

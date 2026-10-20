@@ -19,7 +19,7 @@ use Ksfraser\ProjectManagement\Repository\AssignmentRepositoryInterface;
  */
 class DatabaseAssignmentRepository implements AssignmentRepositoryInterface
 {
-    private const TABLE = 'fa_pm_assignments';
+    private const TABLE = 'ksf_projectmanagement_assignments';
 
     /** @var DbConnectionInterface */
     private $db;

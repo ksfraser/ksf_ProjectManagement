@@ -34,9 +34,9 @@ use Psr\Log\LoggerInterface;
  */
 class ProjectService implements ProjectServiceInterface
 {
-    private const TABLE_PROJECTS = 'fa_pm_projects';
-    private const TABLE_TASKS = 'fa_pm_tasks';
-    private const TABLE_ASSIGNMENTS = 'fa_pm_assignments';
+    private const TABLE_PROJECTS = 'ksf_projectmanagement_projects';
+    private const TABLE_TASKS = 'ksf_projectmanagement_tasks';
+    private const TABLE_ASSIGNMENTS = 'ksf_projectmanagement_assignments';
 
     /** @var DbConnectionInterface */
     private $db;

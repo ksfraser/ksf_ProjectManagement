@@ -118,10 +118,10 @@ ProjectService (constructor)
 └── EmployeeServiceInterface     → FAEmployeeService / Mock
 ```
 
-## Database Schema (fa_pm_ prefix)
+## Database Schema (ksf_projectmanagement_ prefix)
 
 ```
-fa_pm_projects
+ksf_projectmanagement_projects
   - project_id (PK)
   - name, description
   - start_date, end_date
@@ -130,7 +130,7 @@ fa_pm_projects
   - priority, status
   - created_at, updated_at
 
-fa_pm_tasks
+ksf_projectmanagement_tasks
   - task_id (PK)
   - project_id (FK)
   - parent_task_id (self-ref)
@@ -141,19 +141,19 @@ fa_pm_tasks
   - progress (0-100)
   - priority, status
 
-fa_pm_assignments
+ksf_projectmanagement_assignments
   - project_id (PK,FK)
   - employee_id (PK)
   - role
   - start_date, end_date
   - allocation_percentage
 
-fa_pm_project_types
+ksf_projectmanagement_project_types
   - id (PK)
   - name, description
   - inactive, sort_order
 
-fa_pm_activity_log
+ksf_projectmanagement_activity_log
   - id (PK)
   - entity_type, entity_id
   - user_id, action
@@ -199,5 +199,5 @@ A: Loose coupling. The FA module can listen to events without the service knowin
 **Q: Why mock everything in tests?**  
 A: 100% coverage without needing a test database. Fast tests. Isolated unit tests.
 
-**Q: Why fa_pm_ prefix?**  
+**Q: Why ksf_projectmanagement_ prefix?**  
 A: Consistent with fa_crm_ in the CRM module. Clear namespace separation from other modules.

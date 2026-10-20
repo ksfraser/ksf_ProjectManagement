@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  * Ported from ksf_FA_ProjectManagement/tests/Unit/EventCloseTaskServiceTest.
  * Same six behaviours, but driven through an injected FakeDbConnection
  * instead of the FA module's stubbed `db_*` globals — this package has no FA
- * runtime to stub. SQL is therefore asserted unprefixed (`fa_pm_task_progress`,
+ * runtime to stub. SQL is therefore asserted unprefixed (`ksf_projectmanagement_task_progress`,
  * no `0_`) and values are asserted as BOUND PARAMETERS rather than as
  * interpolated literals, which is the stricter check.
  *
@@ -68,7 +68,7 @@ final class EventCloseTaskServiceTest extends TestCase
 
         $writes = $this->db->writes();
         $this->assertCount(1, $writes);
-        $this->assertStringContainsString('INSERT INTO fa_pm_task_progress', $writes[0]['sql']);
+        $this->assertStringContainsString('INSERT INTO ksf_projectmanagement_task_progress', $writes[0]['sql']);
         $this->assertStringContainsString('work_based', $writes[0]['sql']);
         $this->assertSame('TSK-0001', $writes[0]['params']['task_id']);
         $this->assertSame(4.0, $writes[0]['params']['work_hours']);
@@ -123,7 +123,7 @@ final class EventCloseTaskServiceTest extends TestCase
 
         $writes = $this->db->writes();
         $this->assertCount(1, $writes);
-        $this->assertStringContainsString('UPDATE fa_pm_task_progress', $writes[0]['sql']);
+        $this->assertStringContainsString('UPDATE ksf_projectmanagement_task_progress', $writes[0]['sql']);
         $this->assertSame(2.5, $writes[0]['params']['work_hours']);
         $this->assertSame(EventCloseTaskService::CLOSED_STATUS, $writes[0]['params']['status']);
         $this->assertSame('TSK-0001', $writes[0]['params']['task_id']);
@@ -205,7 +205,7 @@ final class EventCloseTaskServiceTest extends TestCase
 
         $this->assertTrue($result['closed']);
         $this->assertSame(0.5, $result['recorded_hours']);
-        $this->assertStringContainsString('INSERT INTO fa_pm_task_progress', $this->db->lastSql());
+        $this->assertStringContainsString('INSERT INTO ksf_projectmanagement_task_progress', $this->db->lastSql());
     }
 
     /**
